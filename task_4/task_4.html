@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Clement_task_4</title>
+<style type="text/css">
+.Center{
+	width:400px;
+	height:200px;
+	background-color:#ccc;
+	position:absolute;                     /*absolute是针对上一个已经定位的元素定位的，比如如果把这一行删掉，你会发现，那两个半圆，一个在屏幕左上角，一个在屏幕右下角*/
+	left:50%;
+	top:50%;
+	margin-left:-200px;
+	margin-top:-100px;            /*知道元素高度和宽度的的*/		
+	/*transform:translate(-50%,-50%);*/            /*不知道元素高度和宽度的，transform是针对元素本身移动的*/
+	
+	
+}
+
+.Yellow1{
+	position:absolute;
+	top:0px;
+	left:0px;
+	background-color:#fc0;
+	width:50px;
+	height:50px;
+	border-radius:0px 0px 50px 0px;
+}
+
+.Yellow2{
+	position:absolute;
+	bottom:0px;
+	right:0px;
+	background-color:#fc0;
+	width:50px;
+	height:50px;
+	border-radius:50px 0px 0px 0px;
+}
+</style>
+</head>
+<body>
+    <div class="Center">
+        <div class="Yellow1">
+        </div>
+        <div class="Yellow2">
+        </div>
+    </div>
+
+
+
+</body>
+</html>
