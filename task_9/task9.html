@@ -1,0 +1,986 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Clement_task_9</title>
+<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">     <!--加搜索小图标用的，这个font-awesome是好东西啊-->
+<!--<link href="../static/Advertiser_set.css" rel="stylesheet" type="text/css" />-->
+<!--
+[建议] 同一 rule set 下的属性在书写时，应按功能进行分组，并以 Formatting Model（布局方式、位置） > Box Model（尺寸） > Typographic（文本相关） > Visual（视觉效果） 的顺序书写，以提高代码的可读性。
+解释：
+Formatting Model 相关属性包括：position / top / right / bottom / left / float / display / overflow 等
+Box Model 相关属性包括：border / margin / padding / width / height 等
+Typographic 相关属性包括：font / line-height / text-align / word-wrap 等
+Visual 相关属性包括：background / color / transition / list-style 等-->
+
+<!--强烈要求过后加javascript效果！！！！-->
+<style type="text/css">
+body{
+	margin:0px;
+	padding:0px;
+}
+.meddle_hori_base{
+	position: absolute;
+	left:50%;
+	transform: translate(-50%,0);
+}
+.meddle_verti_base{
+	position: absolute;
+	top:50%;
+	transform: translate(0,-50%);
+}
+.meddle_center_base{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+}
+
+/*下面针对topBar搞得一堆，是为了让这个条能够随着浏览器宽度变化*/
+/*还是有各种问题，算了，不折腾了，最好是用bootstrap的网格系统，否则总是有错*/
+.topBar{
+	box-sizing: border-box;
+	position: relative;
+	width: 100%;
+	height:50px;
+	background-color: #0066CC;
+}
+
+.topBar .logo{
+	margin-left:5%;
+}
+
+
+
+.topBar form{
+	float:right;
+	margin-right: 2%;
+	padding: 0px;
+    width:35%;
+    height:50px;
+}
+
+
+.topBar input{
+	box-sizing: border-box;            
+    margin-top: 10px;               /*为了能相对父元素width 100%，这里不能用absolute定位*/
+	padding-left:30px;
+	border-radius: 20px;          /*长椭圆*/
+	height:30px;
+	width: 100%;
+	
+}
+
+
+
+.topBar button{
+	position: absolute;
+	width:20px;
+	height:50px;
+	background:none;
+	border-style: none;
+	/*z-index: 1;*/    /*防止被放到下面遮住*/
+
+}
+.topBar button:before{
+	content: "\f002";
+	font-family: FontAwesome;
+	font-size: 20px;
+	color: #324b4e;
+}
+
+.topBar .log{
+	float:right;
+	margin-right:9%;
+	padding: 0px;
+	width:60px;
+	height: 50px;
+}
+
+.topBar .log i{
+	float:left;
+	margin-top: 17px;
+	margin-right: 5px;
+	color:white;
+
+}
+.topBar .log p{	
+	float:left;
+	margin-top: 15px;
+	color:white;
+	font-size: 15px;
+}
+
+
+.core{
+	box-sizing: border-box;
+	width:1348px;
+	height:1250px;
+}
+
+.leftCore{
+	position: relative;
+    box-sizing: border-box;
+	float:left;
+	width:270px;
+	height:100%;
+	background-color:#3C3C3C; 
+}
+
+.rightCore{
+	box-sizing: border-box;
+	float:left;
+	width:1078px;
+    height:100%;
+    background-color:#F0F0F0; 
+}
+.coreBar{
+	box-sizing: border-box;
+	width:1078px;
+    height:30px;
+    background-color: #FFF;
+}
+
+.leftCore .user{
+	
+	top:40px;
+	width:150px;
+	
+}
+
+.leftCore .user i{
+	color:gray;
+	float:left;
+	font-size: 50px;
+	margin-right: 20px;
+
+}
+
+.leftCore .user span{
+	display: block;
+    float:left;
+    margin-top:15px;
+	color:white;
+
+}
+
+.leftCore .collect{
+	top:100px;
+	width:220px;
+	
+}
+
+.leftCore .collect span{
+	display: block;
+	float:left;
+	padding:0px 38px 0px 38px;
+	color:#6C788B;	
+}
+
+.leftCore hr{
+    top:113px;
+	width:1px;
+	height:35px;
+	background-color: white;
+	border-style: none;
+}
+
+/*强烈觉得这个列表要加js*/
+.complexUl{
+	position: absolute;
+	padding-top:0px;
+	top:170px;
+	color:#6C788B;	
+}
+
+.complexUl .first>li{
+	margin-top:40px;
+	list-style-type: none; 
+}
+.complexUl .second>li{
+	margin-top: 25px;
+	list-style-type: none; 
+}
+
+.complexUl .second>li:before{
+    margin-right: 5px;
+	content: "\f105";      /*f106上，f104左，f107下*/
+	font-family: FontAwesome;	
+}
+
+.complexUl .third>li{
+	margin-top:20px;
+	list-style-type: none; 
+	font-size:15px;
+}
+
+.complexUl span{
+	margin-right: 5px;
+}
+
+.rightCore .coreBar p{
+	margin:0px;
+	padding-top: 5px;
+	margin-left: 20px;
+	font-size: 15px;
+	color:#7B7B7B;
+}
+
+.rightCore .coreBar span{
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.rightCore .selected{
+	color:#005AB5;
+}
+
+.rightCore .xiala{
+	position: relative;
+	box-sizing: border-box;
+	margin-left: 80px;
+	margin-top:30px;
+	padding-left:40px;
+	width:940px;
+	height:120px;
+	background-color: white;
+	color:#7B7B7B;
+}
+
+.rightCore .xiala div{
+	box-sizing: border-box;
+	height:80px;
+	float:left;
+	margin-top: 20px;
+	margin-right: 20px;
+}
+
+.rightCore .xiala .left{
+	width:140px;
+}
+.rightCore .xiala .meddle{
+	width:220px;
+}
+.rightCore .xiala .right{
+	width:400px;
+}
+
+.rightCore .xiala span{
+    display: block;
+    float:left;
+    margin-bottom: 15px;
+    width:175px;
+    height:30px;
+
+}
+
+.rightCore .xiala .width1{
+	box-sizing: border-box;
+	margin-left: 5px;
+	margin-right: 5px;
+	width:70px;
+	height:30px;
+  
+}
+.rightCore .xiala .width2{
+	box-sizing: border-box;
+	margin-left: 5px;
+	margin-right: 5px;
+	width:128px;
+	height:30px;
+}
+
+.rightCore .xiala .spanWidth1{
+	width:160px;
+}
+
+.rightCore .xiala .search{
+	width:70px;
+	height:35px;
+    right:90px;
+    border-style: none;
+    border-radius: 5px;
+    background-color:#0066CC; 
+    color:white;
+    font-size: 15px;
+}
+
+.rightCore .huan{
+	position:absolute;
+	top:6px;
+	left:370px;
+}
+
+.rightCore .huan p{
+	box-sizing: border-box;
+	margin:-4px 0px -4px 12px;
+	padding-left: 3px;
+	width:23px;
+	height:23px;
+    background-color: #BEBEBE;
+    color:white;
+}
+
+.rightCore .money{
+	box-sizing: border-box;
+	margin-left: 80px;
+	margin-top:20px;	
+	width:940px;
+	height:90px;
+	background-color: transparent;
+	color:#7B7B7B;
+}
+
+
+
+.rightCore .money .border_ty{
+	border-left:2px solid #D0D0D0;
+	border-top:1px solid #BEBEBE;
+	border-right:1px solid #E0E0E0;
+	border-bottom: 1px solid #E0E0E0;
+}
+
+.rightCore .money .arrow{
+    float:left;
+    position: relative;
+    margin:0px;
+    padding: 0px;
+    width:40px;
+    height:90px;
+    box-sizing: border-box;
+    background-color: white;
+} 
+
+.rightCore .money .arrow i{
+	font-size: 40px;
+
+}
+
+.rightCore .money .hour8{
+	float:left;
+	position: relative;
+	box-sizing: border-box;
+	overflow: hidden;
+	padding-left:5px;
+	width: 717px;
+	height:90px;
+}
+
+.rightCore .money .hour8 p{
+	box-sizing: border-box;
+	float:left;
+	position: relative;
+	margin:0px 5px 0px 0px;	
+	padding-top:15px;
+	height:90px;
+	width: 137px;
+	background-color: white;
+}
+
+.rightCore .money .hour8 .t_1{
+	box-sizing: border-box;
+	width: 92px;
+	color: black;
+	font-size: 20px;
+}
+
+
+.rightCore .money .hour8 .t_2{
+	top:40px;
+	box-sizing: border-box;
+    width:90px;
+	color: black;
+	font-size: 30px;
+	font-weight: bold;
+	color:#FF8000;
+}
+
+.rightCore .money .hour8 .t_3{
+	box-sizing: border-box;
+	font-size: 20px;
+	color:#7B7B7B;
+}
+
+
+.rightCore .money .history{
+	box-sizing: border-box;
+	float:left;
+	position: relative;
+	margin-left: 5px;
+	padding: 0px;
+	width:136px;
+	height:90px;
+    background-color: white;
+}
+
+.rightCore .money .history .t_2{
+	
+	margin:0px;
+	padding-left:18px;
+}
+
+.rightCore .money .history .t_1{
+	
+	font-size:30px;
+	color:#0066CC;
+}
+
+.rightCore .money .history .t_3{
+    height:10px;	
+	padding-left:35px;	
+	font-size:15px;
+	font-weight: bold;
+	color:#000;
+}
+
+.rightCore .summary{
+	box-sizing: border-box;
+	padding:0px 0px 0px 80px;
+	margin-top:20px;		
+	height:120px;
+	background-color: transparent;
+}
+
+.rightCore .summary>p{
+	margin-top:0px;
+	margin-bottom: 3px;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.rightCore .summary .success{
+	margin-top: 0px;
+	overflow: auto;
+}
+
+.rightCore .summary .success [class^="d_"]{
+	position: relative;
+}
+
+
+.rightCore .summary .success>div{
+	box-sizing: border-box;
+	float:left;
+    width:205px;
+	height:95px;
+	margin-right: 40px;
+	border-top:1px solid #BEBEBE;
+	border-right:1px solid #E0E0E0;
+	border-bottom: 1px solid #E0E0E0;
+	background-color: white;
+}
+
+.rightCore .summary .success .text{
+	margin-top:0px;
+	padding-left: 10px;
+	font-size:15px;
+	color:#7B7B7B;
+	line-height: 30px;
+}
+
+.rightCore .summary .success .block{
+	margin:0px;
+	left:110px;
+	width:70px;
+	height:50px;
+}
+
+.rightCore .summary .success .d_1{
+	border-left:3px solid #00CACA;
+}
+
+.rightCore .summary .success .d_1 .block{
+	background-color:  #00CACA;
+}
+
+.rightCore .summary .success .d_2{
+	border-left:3px solid #0080FF;
+}
+
+.rightCore .summary .success .d_2 .block{
+	background-color:  #0080FF;
+}
+
+.rightCore .summary .success .d_3{
+	border-left:3px solid #EA0000;
+}
+
+.rightCore .summary .success .d_3 .block{
+	background-color:  #EA0000;
+}
+
+.rightCore .summary .success .d_4{
+	border-left:3px solid #EAC100;
+}
+
+.rightCore .summary .success .d_4 .block{
+	background-color: #EAC100;
+}
+
+.rightCore .project{
+	width:940px;
+	height:350px;
+	margin-left: 80px;
+	margin-top: 15px;
+}
+
+.rightCore .first_group{
+	box-sizing: border-box;
+	float:left;
+	margin-right: 20px;
+	height:350px;
+	width:570px;
+	border:1px solid #ADADAD;
+	border-radius: 8px;
+	background-color: white;
+
+}
+
+.rightCore .second_group{
+	box-sizing: border-box;
+	float:left;
+	height:350px;
+	width:350px;
+	border:1px solid #ADADAD;
+	border-radius: 8px;
+	background-color: white;
+}
+
+.rightCore .top{
+	box-sizing: border-box;
+	position: relative;
+	width:100%;
+	height:40px;
+	background-color: #F0F0F0;
+	border-top-right-radius:8px;
+	border-top-left-radius:8px;
+	font-size: 15px;
+	color:#ADADAD;
+}
+
+.rightCore .top p{
+	left:20px;
+	margin-top: 0px;
+}
+
+.rightCore .project .first_group .compTable{
+	box-sizing: border-box;
+    margin-top: 15px;
+    margin-left: 22px;
+    width:520px;
+    height:260px;
+}
+
+.rightCore .project .first_group .compTable p{
+	box-sizing: border-box;
+	float:left;
+	position: relative;
+	padding:0px;
+	margin-top:0px;
+	margin-bottom: 0px;
+	margin-right: 5px;
+	width:90px;
+	height:30px;
+    border-style: none;
+	border-radius: 3px;
+	background-color: #E0E0E0;
+}
+
+.rightCore .project .first_group .compTable p>span{
+	margin:0px;
+	padding:0px;
+	width:40px;
+	font-size: 13px;
+}
+
+.rightCore .project .first_group .compTable .special{
+	box-sizing: content-box;
+	background-color: white;
+    margin-bottom: -2px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	border-left:1px solid #ADADAD;
+	border-top:1px solid #ADADAD;
+	border-right:1px solid #ADADAD;
+}
+
+.rightCore .project .first_group .compTable .tableCore{
+	box-sizing: border-box;
+	float:left;
+	width:100%;
+	height:calc(100% - 30px);
+	padding-left:40px;
+	padding-top: 30px;
+	border:1px solid #ADADAD;
+	border-radius: 8px;
+	border-top-left-radius:0px; 
+}
+
+.rightCore .project .first_group .compTable .tableCore table{
+	border-collapse: collapse;
+	
+}
+
+.rightCore .project .first_group .compTable .tableCore th{
+	width:105px;
+	height: 25px;
+	border:1px solid #ADADAD;
+	font-size: 10px;
+	font-weight:400;
+}
+
+.rightCore .project .second_group  table{
+	margin-left: 30px;
+	border-collapse: collapse;
+	text-align: left;
+}
+
+.rightCore .project .second_group  th{
+	position: relative;
+	width:105px;
+	height: 25px;
+	padding-left: 10px;
+	border-bottom:1px solid #ADADAD;
+	font-size: 10px;
+	font-weight:400;
+}
+
+.rightCore .project .second_group  .title{
+	height:50px;
+}
+
+.rightCore .project .second_group  .price{
+	width:100px;
+	height:50px;
+	border-right:1px solid #ADADAD;
+}
+
+.rightCore .project .second_group  .supervisor{
+	width:180px;
+}
+
+.rightCore .project .second_group  .describe{
+	height:110px;
+}
+
+.rightCore .project .second_group  table .t_1{
+	
+	color:#ADADAD;
+	font-size: 15px;
+}
+
+.rightCore .project .second_group  table .t_2{
+	
+	font-size: 15px;
+}
+
+.rightCore .project .second_group  .describe .t_1{
+	position: absolute;
+	top:5px;
+}
+
+.rightCore .project .second_group  .describe .t_2{
+	position: absolute;
+	top:25px;
+}
+
+.rightCore .project .second_group  form{
+	margin-left: 30px;
+	margin-top: 5px;
+	width:300px;
+	height: 30px;
+}
+
+.rightCore .project .second_group  form .checkbox{
+	float:left;
+	margin-top: 8px;
+	width:15px;
+	height:15px;
+}
+
+.rightCore .project .second_group form label{  
+	display: block;
+	float: left;
+    margin-left: 3px;   
+    margin-right:120px;
+    margin-top: 5px;
+    width:100px;
+    font-size:15px;
+    color:#ADADAD;
+}
+
+.rightCore .project .second_group  form .submit{
+	float:left;
+	width:55px;
+	height:30px;
+	border-radius: 2px;
+	border-style: none;
+	background-color: #0066CC;
+	color:white;
+}
+
+.rightCore .bottomBlock{
+	width:940px;
+	height:350px;
+	margin-left: 80px;
+	margin-top: 15px;
+}
+
+.rightCore .bottomBlock .first_group{
+	width:400px;
+}
+
+.rightCore .bottomBlock .second_group{
+	width:520px;
+}
+
+
+
+
+
+</style>
+</head>
+
+
+<body>
+    <div class="topBar">
+        <img class="meddle_verti_base logo" src="logo.PNG"/>
+        <div class="log">
+            <i class="fa fa-user-circle-o"></i>
+            <p >登录</p>
+        </div>
+        <form>
+            <button type="submit"></button>
+            <input type="text" placeholder="请输入搜索内容……">
+        </form>
+    </div>    
+
+    <div class="core">
+        <div class="leftCore">
+            <p class="user meddle_hori_base"><i class="fa fa-user-circle"></i><span class="userName">ABC123</span></p>
+            <p class="collect meddle_hori_base">
+            <span>110</br>收藏</span>
+            <span>313</br>粉丝</span>
+            </p>
+            <hr class="meddle_hori_base"/>
+            <div class=" complexUl">     <!--强烈觉得要加js-->
+            <ul class="first">
+                <li><span class="fa fa-folder-open"></span>个人报表
+                	<ul class="second">
+                		<li><span class="fa fa-folder"></span>文件一</li>
+                		<li><span class="fa fa-folder"></span>文件二
+                		    <ul class="third">
+                		        <li><span class="fa fa-file"></span>文档1</li>
+                		        <li><span class="fa fa-file"></span>文档2</li>
+                		    </ul>
+                		</li>
+                		<li><span class="fa fa-folder"></span>文件三</li>
+                	</ul>
+                </li>
+                <li><span class="fa fa-star"></span>个人收藏</li>
+                <li><span class="fa fa-share-square"></span>我的分享</li>
+                <li><span class="fa fa-star"></span>图库</li>
+                <li><span class="fa fa-star"></span>成长记录</li>
+                <li><span class="fa fa-copy"></span>账户信息</li>
+            </ul>
+            </div>
+
+        </div>
+        <div class="rightCore">
+            <div class="coreBar">
+                <p><span>C站</span>/<span>个人报表</span>/<span>文件一</span>/<span class="selected">文档一</span></p>
+            </div>
+            <div class="xiala">     <!--箭头先不改了，没有javascript改了也没用-->
+                <form>
+                    <div class="left">
+                    <span>查询项
+                        <select class="width1">
+                    	    <option>第一项</option>
+                    	    <option>第二项</option>
+                        </select>
+                    </span>
+                    </div>
+                    <div class="meddle">
+                    <span>买方
+                        <select class="width2">
+                    	    <option>小A</option>
+                    	    <option>小B</option>
+                        </select>
+                    </span>
+                    <span>卖方
+                        <select class="width2">
+                    	    <option>小C</option>
+                    	    <option>小D</option>
+                        </select>
+                    </span>
+                    </div>
+                    <div class="right">
+                    <span>日期 <input class="width2" type="text" placeholder="2016-04-01"></span>
+                    <span class="spanWidth1">&nbsp总耗时
+                        <select class="width1">
+                    	    <option>8天</option>
+                    	    <option>9天</option>
+                        </select>
+                    </span>
+                    <span>人数
+                        <select class="width1">
+                    	    <option>10人</option>
+                    	    <option>11人</option>
+                        </select>
+                        成交项
+                    </span>
+                    <span class="spanWidth1">
+                        <select class="width2">
+                    	    <option>10项</option>
+                    	    <option>11项</option>
+                        </select>
+                    </span>
+                    </div>
+                    <input class="search meddle_verti_base" type="submit" value="搜索">
+                </form> 
+                <div class="huan">
+                    <img src="up_arrow.PNG"/>
+                    <p>换</p>
+                    <img src="down_arrow.PNG"/>             
+                </div>
+            </div>
+            <div class="money">
+                <div class="arrow border_ty">
+                    <i class="fa fa-angle-left meddle_center_base"></i>
+                </div>
+                <div class="hour8">
+                    <p class="hour-1 border_ty"><span class="t_1 meddle_hori_base">09:00 am</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>
+                    <p class="hour-2 border_ty"><span class="t_1 meddle_hori_base">10:00 am</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>
+                    <p class="hour-3 border_ty"><span class="t_1 meddle_hori_base">11:00 am</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>
+                    <p class="hour-4 border_ty"><span class="t_1 meddle_hori_base">00:00 pm</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>
+                    <p class="hour-5 border_ty"><span class="t_1 meddle_hori_base">01:00 pm</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>
+                    <p class="hour-6 border_ty"><span class="t_1 meddle_hori_base">02:00 pm</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>
+                    <p class="hour-7 border_ty"><span class="t_1 meddle_hori_base">03:00 pm</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>
+                    <p class="hour-8 border_ty"><span class="t_1 meddle_hori_base">04:00 pm</span><span class="t_2 meddle_hori_base"><span class="t_3 fa fa-yen"></span>1200</span></p>  
+                </div>
+                <div class="arrow border_ty">
+                    <i class="fa fa-angle-right meddle_center_base"></i>
+                </div>
+                <div class="history border_ty">
+                    <p class="t_2 meddle_verti_base"><span class="t_1 fa fa-calendar meddle_verti_base"></span><span class="t_3">历史查询</span></p>
+                </div>
+            </div>
+
+            <div class="summary">
+                <p>2016年4月份统计</p>
+                <div class="success">
+                    <div class="d_1">
+                        <p class="text meddle_verti_base">133311</br>成交量</p>
+                        <p class="block meddle_verti_base"></p>
+                    </div>
+                    <div class="d_2">
+                        <p class="text meddle_verti_base">133311</br>成交量</p>
+                        <p class="block meddle_verti_base"></p>
+                    </div>
+                    <div class="d_3">
+                        <p class="text meddle_verti_base">133311</br>成交量</p>
+                        <p class="block meddle_verti_base"></p>
+                    </div>
+                    <div class="d_4">
+                        <p class="text meddle_verti_base">133311</br>成交量</p>
+                        <p class="block meddle_verti_base"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project">
+                <div class="first_group">
+                	<div class="top">
+                	    <p class="meddle_verti_base">第一组项目</p>
+                	</div>
+                	<div class="compTable">
+                	    <p class="special"><span class="meddle_center_base">项目一</span></p>
+                	    <p><span class="meddle_center_base">项目二</span></p>
+                	    <p><span class="meddle_center_base">项目三</p>
+                	    <p><span class="meddle_center_base">项目四</p>
+                	    <p><span class="meddle_center_base">项目五</p>
+                	    <div class="tableCore">
+                	    	<table>
+                	    	    <tr>
+                	    	        <th><span>购买材料一</span></th>
+                	    	        <th><span>购买材料二</span></th>
+                	    	        <th><span>购买材料三</span></th>
+                	    	        <th><span>购买材料四</span></th>
+                	    	    </tr>
+                	    	    <tr>
+                	    	        <th><span>购买材料一</span></th>
+                	    	        <th><span>购买材料二</span></th>
+                	    	        <th><span>购买材料三</span></th>
+                	    	        <th><span>购买材料四</span></th>
+                	    	    </tr>
+                	    	    <tr>
+                	    	        <th><span>购买材料一</span></th>
+                	    	        <th><span>购买材料二</span></th>
+                	    	        <th><span>购买材料三</span></th>
+                	    	        <th><span>购买材料四</span></th>
+                	    	    </tr>
+                	    	    <tr>
+                	    	        <th><span>购买材料一</span></th>
+                	    	        <th><span>购买材料二</span></th>
+                	    	        <th><span>购买材料三</span></th>
+                	    	        <th><span>购买材料四</span></th>
+                	    	    </tr>
+                	    	    <tr>
+                	    	        <th><span>购买材料一</span></th>
+                	    	        <th><span>购买材料二</span></th>
+                	    	        <th><span>购买材料三</span></th>
+                	    	        <th><span>购买材料四</span></th>
+                	    	    </tr>
+                	    	    <tr>
+                	    	        <th><span>购买材料一</span></th>
+                	    	        <th><span>购买材料二</span></th>
+                	    	        <th><span>购买材料三</span></th>
+                	    	        <th><span>购买材料四</span></th>
+                	    	    </tr>
+                	    	</table>
+                	    </div>
+                	</div>
+                </div>
+                <div class="second_group">
+                    <div class="top">
+                	    <p class="meddle_verti_base">第二组项目</p>
+                	</div>
+                	<table>
+                	    <tr>
+                	        <th class="title" colspan="2"><span class="t_1">标题</span></br><span class="t_2">项目报表三</span></th>
+                	    </tr>
+                	    <tr>
+                	        <th class="price"><span class="t_1">价格</span></br><span class="t_2"><span class="fa fa-yen"></span>158</span></th>
+                	        <th class="supervisor"><span class="t_1">负责人</span></br><span class="t_2">小A</span></th>
+                	    </tr>
+                	    <tr>
+                	        <th class="describe" colspan="2"><span class="t_1">详细描述</span></br><span class="t_2">该项目目前负责人是……</span></th>
+                	    </tr>
+                	</table>
+                	<form>
+                	    <input class="checkbox" type="checkbox"><label>遵守保密协议</label>
+                	    <input class="submit" type="submit" value="搜索">
+                	</form>
+                </div>
+            </div>
+
+            <div class="bottomBlock">
+                <div class="first_group">
+                	<div class="top">
+                	    <p class="meddle_verti_base">日历</p>
+                	</div>
+                	<!--日历用js补吧-->
+                </div>
+                <div class="second_group">
+                    <div class="top">
+                	    <p class="meddle_verti_base">汽车行业品牌榜</p>
+                	</div>
+                	<!--这个的项很多，也应该用js补-->
+                </div>
+            </div>
+
+        </div>        
+    </div>
+
+</body>
+</html>
