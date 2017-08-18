@@ -1,0 +1,427 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>Clement_task_11</title>
+<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link href="../static/Advertiser_set.css" rel="stylesheet" type="text/css" />-->
+<!--
+[建议] 同一 rule set 下的属性在书写时，应按功能进行分组，并以 Formatting Model（布局方式、位置） > Box Model（尺寸） > Typographic（文本相关） > Visual（视觉效果） 的顺序书写，以提高代码的可读性。
+解释：
+Formatting Model 相关属性包括：position / top / right / bottom / left / float / display / overflow 等
+Box Model 相关属性包括：border / margin / padding / width / height 等
+Typographic 相关属性包括：font / line-height / text-align / word-wrap 等
+Visual 相关属性包括：background / color / transition / list-style 等-->
+<style type="text/css">
+/*块元素用vertical-align的办法，利用一个同级的inline块元素，让这个同级inline块元素满高度，然后用这个设置对齐
+.test1{
+    height:200px;
+    width:200px;
+    border:1px solid green;
+}
+.test1 span{
+    display: inline-block;
+    border:1px solid green;
+}
+.test1>.t1{
+    height:100%;
+    vertical-align: middle;        /*同级块元素
+}
+*/
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+a,img{
+    -webkit-touch-callout:none;            /* 禁止长按链接与图片弹出菜单 */
+}
+
+
+html,body{
+    -webkit-user-select:none;             /* 禁止选中文本（如无文本选中需求，此为必选项） */
+    user-select:none;
+}
+
+.meddle_hori_base{
+    position: absolute;
+    left:50%;
+    transform: translate(-50%,0);
+}
+.meddle_verti_base{
+    position: absolute;
+    top:50%;
+    transform: translate(0,-50%);
+}
+.meddle_center_base{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.head{
+    position: relative;
+    height: 60px;
+    background-color: rgb(145,212,218);
+    color:white;
+    
+}
+
+.head>span{
+    display: flex;
+    align-items: center;
+}
+
+.head>span>h1{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.head>span>i{
+    margin:0px 4px 0px 4px;
+    font-size: 40px;
+}
+
+.head>h2{
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.navigation{
+    height:60px;
+    list-style: none;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.navigation>li{
+    box-sizing: border-box;
+    height:100%;
+    flex:1;
+    line-height: 60px;    /*vertical-align不适用于块元素，而且inline的那种也不是子块相对于父块对齐，而是相对同级inline子元素对齐，所以可以弄一个同级的满高度的inline元素来设置vertical-align*/
+    /*这里为了省事就用line-height了*/
+    text-align: center;      
+}
+
+.navigation>li:hover{
+    border-bottom:5px solid rgb(145,212,218);
+}
+
+.xiong1{
+
+    width:100%;
+}
+
+[class^="tags"]{
+    margin:10px 10px 0px 10px;
+    list-style: none;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+[class^="tags"]>li{
+    box-sizing: border-box;
+    height:100%;
+    flex:1;
+    text-align: center;      
+}
+
+
+.tags2{
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+
+.tags1>li>img{
+
+    width:100%;
+}
+
+.div_bor{
+    box-sizing: border-box;
+    border-top:1px solid gray;
+    margin:20px 10px 10px 10px;
+    padding: 20px 0px 10px 0px;
+}
+
+[class^="divide"]{
+    list-style: none;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+[class^="divide"]>li{
+    border-right :1px solid gray;
+    box-sizing: border-box;
+    height:100%;
+    flex:1;
+    text-align: center;   
+    font-size: 20px; 
+    font-weight: 700;  
+}
+
+
+[class^="divide"]>li>img{
+    box-sizing: border-box;
+    width:100%;    
+}
+
+[class^="divide"]>li>span{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+[class^="divide"]>.d_3{
+    border-right-style: none;
+}
+
+.grayBar{
+    height:20px;
+    background-color: #E0E0E0;
+}
+
+
+.model1{
+    margin:10px 0px 10px 0px;
+}
+
+.model1>span{
+    display: block;
+    margin:0px 10px 0px 10px;
+    border-bottom:1px solid gray;
+    padding-bottom: 10px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.model1>table{
+    border-collapse: separate;
+    margin:0px 0px 0px 0px;
+    width:100%;
+    border-spacing: 10px 10px;
+    text-align: center;
+    
+}
+
+
+
+.model1>table td{
+    background-color: #D0D0D0;
+
+}
+.model1>table th{
+    position: relative;
+    width:30%;
+    border:1px solid tomato;
+    overflow: hidden;
+}
+
+.model1>table th:before{
+    content:"";
+    display: block;
+    border:1px solid red;
+    padding-top: 100%;     /*padding和margin的百分比是按照最近的块级祖先元素的width算的，而不是height，长知识长知识*/
+}
+
+.model1>table th>img{
+    position: absolute;
+    top:0px;
+    left:0px;
+    width: 100%;
+    height:100%;
+}
+
+/*整了一晚上可整对了，用div+flex*/
+.arti1{
+    display: flex;
+    padding:10px 10px 10px 10px;
+    border-bottom: 1px solid gray;
+}
+
+.arti1 .image{
+    box-sizing: border-box;
+    flex:1;
+    overflow: hidden;
+}
+.arti1 img{
+    width:100%;
+}
+
+.arti1 .right{
+    display: flex;
+    flex:2;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;    
+    margin-left: 10px;
+}
+
+.arti1,.arti2 .t1{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.arti1,.arti2 .t2{
+    font-size: 10px;
+    color:#ADADAD;
+}
+
+.arti2 ul{
+    display: flex;
+    padding:5px 0px 5px 0px;
+}
+
+.arti2 li{
+    flex:1;
+    list-style: none;
+    border:1px solid white;
+}
+
+
+
+.arti2{
+    padding: 10px;
+}
+
+.arti2 li>img{
+    width: 100%;
+}
+
+.grayBar2{
+    height:40px;
+    background-color: #E0E0E0;
+}
+
+
+
+
+
+
+</style>
+</head>
+
+
+<body>
+<!--块元素用vertical-align的办法，利用一个同级的inline块元素，让这个同级inline块元素满高度，然后用这个设置对齐
+<div class="test1">
+    <span class="t1"></span>
+    <span class="t2">1111111</span>
+</div>
+-->
+<div class="head">
+    <span class="meddle_verti_base">
+        <i class="fa fa-angle-left"></i>
+        <h1>返回</h1>
+    </span>
+    <h2 class="meddle_center_base">这是标题</h2>
+</div>
+<ul class="navigation">
+    <li>导航</li>
+    <li>导航</li>
+    <li>导航</li>
+    <li>导航</li>
+    <li>导航</li>
+</ul>
+
+
+<img class="xiong1" src="xiong.jpg"/>
+
+
+<ul class="tags1">
+    <li><img src="tag.jpg"/></li>
+    <li><img src="tag.jpg"/></li>
+    <li><img src="tag.jpg"/></li>
+    <li><img src="tag.jpg"/></li>
+    <li><img src="tag.jpg"/></li>
+</ul>
+<ul class="tags2">
+    <li>标签</li>
+    <li>标签</li>
+    <li>标签</li>
+    <li>标签</li>
+    <li>标签</li>
+</ul>
+
+<div class="div_bor">
+<ul class="divide">
+    <li><img src="xiaoxiong.jpg"/></li>
+    <li><img src="xiaoxiong.jpg"/></li>
+    <li class="d_3"><img src="fenlan3.jpg"/></li>
+</ul>
+<ul class="divide">
+    <li>分栏一</br><span>分栏小标题</span></li>
+    <li>分栏二</br><span>分栏小标题</span></li>
+    <li class="d_3">分栏三</br><span>分栏小标题</span></li>
+</ul>
+</div>
+   
+<div class="grayBar">
+</div>
+
+<div class="model1">
+    <span>模块一</span>
+    <table>
+        <tr>
+            <th rowspan="2"><img src="table.jpg"/></th>
+            <td>这是文案</td>
+            <td>这是文案</td>
+        </tr>
+        <tr>
+            <td>这是文案</td>
+            <td>这是文案</td>
+        </tr>
+        <tr>
+            <th rowspan="2"><img src="table.jpg"/></th>
+            <td>这是文案</td>
+            <td>这是文案</td>
+        </tr>
+        <tr>
+            <td>这是文案</td>
+            <td>这是文案</td>
+        </tr>
+    </table>
+</div>
+
+<div class="grayBar">
+</div>
+
+<div class="arti1">
+   <div class="image"><img src="bearArti.jpg"/></div>
+   <div class="right">
+        <div class="t1">这是另一个文章标题这是另一个文章标</div>
+        <div class="t2">文章来源 6分钟前</div>
+   </div>
+</div>
+
+<div class="arti1">
+   <div class="image"><img src="bearArti.jpg"/></div>
+   <div class="right">
+        <div class="t1">这是另一个</div>
+        <div class="t2">文章来源 7分钟前</div>
+   </div>
+</div>
+
+<div class="arti2">
+   <div class="t1">这是文章标题</div>
+   <ul>
+       <li><img src="bearArti.jpg"/></li>
+       <li><img src="bearArti.jpg"/></li>
+       <li><img src="bearArti.jpg"/></li>
+   </ul>
+   <div class="t2">文章来源 7分钟前</div>
+</div>
+
+<div class="grayBar2">
+</div>
+
+
+</body>
+</html>
