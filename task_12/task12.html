@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Clement_task_12</title>
+<!--<link href="../static/Advertiser_set.css" rel="stylesheet" type="text/css" />-->
+<!--
+[建议] 同一 rule set 下的属性在书写时，应按功能进行分组，并以 Formatting Model（布局方式、位置） > Box Model（尺寸） > Typographic（文本相关） > Visual（视觉效果） 的顺序书写，以提高代码的可读性。
+解释：
+Formatting Model 相关属性包括：position / top / right / bottom / left / float / display / overflow 等
+Box Model 相关属性包括：border / margin / padding / width / height 等
+Typographic 相关属性包括：font / line-height / text-align / word-wrap 等
+Visual 相关属性包括：background / color / transition / list-style 等-->
+<style type="text/css">
+*{
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+
+}
+
+body>.m_1{
+    width:30%;
+}
+
+
+.m_1>ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.m_1>ul>.co1{
+    flex:1;
+}
+
+.m_1>ul>.co2{
+    flex:2;
+}
+
+.m_1>ul>.co3{
+    flex:1;
+}
+
+.m_1>ul>li{
+    box-sizing: border-box;
+    border:1px solid white;
+    height: 25px;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.m_1 .color_black{
+    background-color: black;
+}
+
+.m_1 .color_gray{
+    background-color: #ADADAD;
+}
+
+.m_1 .text_white{
+    color:white;
+}
+
+.m_1 .text_red{
+    color:red;
+}
+
+body>.m_2{
+    margin-top: 50px;
+    width:10%;
+    height: 30px;
+    border:1px solid gray;
+    border-top: 2px solid gray;
+}
+
+body>.m_3{
+    margin-top: 50px;
+    width:20%;
+    height: 30px;
+    box-shadow: -3px -3px 5px #1E90FF,
+    3px 3px 5px #1E90FF,
+    -3px 3px 5px #1E90FF,
+    3px -3px 5px #1E90FF;
+}
+
+body>.m_all{
+    position: relative;
+    margin-top:50px;
+    width:30%;
+    height:200px;
+}
+
+.m_4{
+    background-color: green;
+}
+
+.m_5{
+    column-count: 2;
+    column-rule: 2px solid black;
+    column-gap:2px;
+}
+
+.m_5 div{
+    box-sizing: border-box;
+}
+
+.m_5 .left{
+    flex:1;
+    height:100%;
+    position: relative;
+    background-color: blue;
+}
+
+.m_5 .right{
+    flex:1;
+    height: 100%;
+    position: relative;
+    background-color: green;
+}
+
+.m_all .core{
+    box-sizing: border-box;
+    position: absolute;
+    right:0px;
+    bottom:0px;
+    width:90px;
+    height:30px;
+    column-count:3; 
+    column-gap:2px;
+}
+
+.m_all .core p{
+    box-sizing: border-box;
+    height:100%;
+    flex:1;
+    text-align: center;
+    line-height: 30px;
+    background-color:hsla(0,0%,100%,0.3);     /*hsla颜色表示法*/
+    font-size: 20px;
+    color:white;
+}
+
+.m_6{
+    background-color: blue;
+}
+
+
+</style>
+</head>
+
+<body>
+<div class="m_1">
+    <ul class="ro_0 color_black text_white">
+        <li class="co1">排名</li>
+        <li class="co2">网站</li>
+        <li class="co3">热度</li>
+    </ul>
+    <ul class="ro_1 text_red">
+        <li class="co1">1.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">13000</li>
+    </ul>
+    <ul class="ro_2 color_gray text_red">
+        <li class="co1">2.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">13000</li>
+    </ul>
+    <ul class="ro_3 text_red">
+        <li class="co1">3.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">13000</li>
+    </ul>
+    <ul class="ro_4 color_gray">
+        <li class="co1">4.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">13000</li>
+    </ul>
+    <ul class="ro_5">
+        <li class="co1">5.</li>
+        <li class="co2">百度前端技术</li>
+        <li class="co3">13000</li>
+    </ul>
+    <ul class="ro_6 color_gray">
+        <li class="co1">6.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">1300</li>
+    </ul>
+    <ul class="ro_7">
+        <li class="co1">7.</li>
+        <li class="co2">百度前端技术</li>
+        <li class="co3">1300</li>
+    </ul>
+    <ul class="ro_8 color_gray">
+        <li class="co1">8.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">1300</li>
+    </ul>
+    <ul class="ro_9">
+        <li class="co1">9.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">1300</li>
+    </ul>
+    <ul class="ro_10 color_gray">
+        <li class="co1">10.</li>
+        <li class="co2">百度前端技术学院</li>
+        <li class="co3">13000</li>
+    </ul>
+</div>
+
+<div class="m_2">
+</div>
+
+<div class="m_3">
+</div>
+
+<div class="m_all m_4">
+    <div class="core">
+    <p>1</p>
+    <p>2</p>
+    <p>3</p>
+    </div>
+</div>
+<div class="m_all m_5">
+    <div class="left">
+    </div>
+    <div class="right">
+        <div class="core">
+            <p>1</p>
+            <p>2</p>
+            <p>3</p>
+        </div>
+    </div>
+</div>
+
+<div class="m_all m_6">
+    <div class="core">
+    <p>1</p>
+    <p>2</p>
+    <p>3</p>
+    </div>
+</div>
+   
+
+</body>
+</html>
