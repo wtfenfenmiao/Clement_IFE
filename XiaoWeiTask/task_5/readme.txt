@@ -1,0 +1,1 @@
+关于几种布局，http://ife.baidu.com/note/detail/id/666，推荐这个人的笔记，很棒！差不多说全了所有的布局
