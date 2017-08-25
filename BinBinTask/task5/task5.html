@@ -1,0 +1,431 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 05</title>
+<style type="text/css">
+/*div小格格式
+#parent{
+	height:300px;
+	overflow: auto;
+}
+*/
+/*
+#parent>div{
+	float:left;
+	margin-right: 10px;
+	margin-top:10px;
+	width:40px;
+	height:40px;
+	border:1px solid red;
+	background-color: red;
+	color:white;
+    text-align: center;
+    line-height: 40px;
+}
+*/
+/*div条格式*/
+#parent,#sorted{
+	position: relative;
+	margin-top:10px;
+	height:200px;
+	overflow: auto;
+}
+
+#parent>div,#sorted>div{
+	float:left;
+	position: relative;
+	margin-right: 5px;
+	width:15px;
+	height:200px;
+}
+
+#parent>div>div,#sorted>div>div{
+	position: absolute;
+	bottom: 0px;
+	width:15px;
+	background-color: red;
+}
+
+</style>
+</head>
+<body>
+<!--总要放纵自己去爱些东西  2017/08/24记录-->  
+<input type="text" id="number">
+<button id="leftIn" onclick="leftIn()">左侧入</button>
+<button id="rightIn" onclick="rightIn()">右侧入</button>
+&nbsp&nbsp&nbsp&nbsp
+<button id="leftOut" onclick="leftOut()">左侧出</button>
+<button id="rightOut" onclick="rightOut()">右侧出</button>
+&nbsp&nbsp&nbsp&nbsp
+<button id="bubbleSort" onclick="bubbleSort()">冒泡排序</button>  <!--缺一个，如果是空的不让排序-->
+<button id="selectSort" onclick="selectSort()">选择排序</button>
+<button id="fastSort" onclick="fastSort()">快速排序</button>
+<div id="parent">
+</div>
+<div id="sorted">
+</div>
+
+
+
+ 
+
+<script type="text/javascript">
+var parent=document.getElementById("parent");
+function leftIn(){
+	var number=document.getElementById("number").value;
+	var len=parent.children.length;
+	if(len>=60)
+	{
+		alert("满了不能再加了！");
+	}
+	else if(number==""||isNaN(number))      //isNaN判断是否为数字，true不是false是
+	{
+		alert("请输入数字！");
+	}
+	else if(number<10||number>100)
+	{
+		alert("请输入10到100之间的数字！");
+	}
+	else
+	{
+		/*div小格的的格式
+		var numberDiv=document.createElement("div");      //创造元素，setAttribute可以给这个元素绑定id class等等等等
+        numberDiv.onclick=function(){clickDel(this)};
+        numberDiv.onmouseover=function(){onmouseDel(this)};
+        var numberIn=document.createTextNode(number);     
+        numberDiv.appendChild(numberIn);
+        parent.insertBefore(numberDiv,parent.children[0]);    //在前面加新子节点
+        */
+        /*条的格式*/
+        var numberDivBar=document.createElement("div");
+        var numberDivBarCore=document.createElement("div");
+        numberDivBarCore.style.height=number;
+        numberDivBar.onclick=function(){clickDel(this)};
+        numberDivBar.onmouseover=function(){onmouseDel(this)};
+        numberDivBar.appendChild(numberDivBarCore);
+        parent.insertBefore(numberDivBar,parent.children[0]);   
+
+	}     
+	//alert("长度"+parent.children.length);
+}
+
+function rightIn(){
+	var number=document.getElementById("number").value;
+	var len=parent.children.length;
+	if(len>=60)
+	{
+		alert("满了不能再加了！");
+	}
+	else if(number==""||isNaN(number))
+	{
+		alert("请输入数字！");
+	}
+	else if(number<10||number>100)
+	{
+		alert("请输入10到100之间的数字！");
+	}
+	else
+	{
+		/*div小格的格式
+		var numberDiv=document.createElement("div");
+        numberDiv.onclick=function(){clickDel(this)};
+        numberDiv.onmouseover=function(){onmouseDel(this)};
+        var numberIn=document.createTextNode(number);
+        numberDiv.appendChild(numberIn);
+        parent.appendChild(numberDiv);
+        */
+        /*parent2的格式*/
+        var numberDivBar=document.createElement("div");
+        var numberDivBarCore=document.createElement("div");
+        numberDivBarCore.style.height=number;
+        numberDivBar.onclick=function(){clickDel(this)};
+        numberDivBar.onmouseover=function(){onmouseDel(this)};
+        numberDivBar.appendChild(numberDivBarCore);
+        parent.appendChild(numberDivBar);  
+	}       
+}
+
+function leftOut(){
+	if(parent.children.length==0)
+	{
+		alert("空");
+	}
+	else
+	{
+		//var number=parent.children[0].innerHTML;
+		var number=parent.children[0].children[0].style.height;       //childNodes会带空节点，用children就不会
+		/*
+	    if(typeof(number)=="undefined"||number=="")    //typeof(value)=="undefined"判断是否是undefined
+	    {
+		    alert("空！");
+	    }
+	    */
+        alert(number);
+        parent.removeChild(parent.children[0]);
+	}	
+}
+
+function rightOut(){
+	var len=parent.children.length;
+	if(len==0)
+	{
+        alert("空");
+	}
+	else
+	{
+		//var number=parent.children[len-1].innerHTML;  
+		var number=parent.children[len-1].children[0].style.height;      //这里别用lastchild和firstchild，不知道为什么，用这个的话，如果左侧填几个，右侧填几个，用leftout删完了左边的会没办法删右边的,左边的和右边的中间有个空，感觉像是childNodes和children比算了空结点一样。
+		/*
+	  if(typeof(number)=="undefined"||number=="")
+	    {
+		    alert("空！");
+	    }
+	*/
+        alert(number);
+        parent.removeChild(parent.children[len-1]);
+	}	
+}
+
+function clickDel(thisdiv){
+	thisdiv.parentNode.removeChild(thisdiv);
+}
+function onmouseDel(thisdiv){
+	thisdiv.style.cursor="hand";
+}
+
+function disableButton(){
+	document.getElementById("leftIn").disabled=true;
+	document.getElementById("rightIn").disabled=true;
+	document.getElementById("leftOut").disabled=true;
+	document.getElementById("rightOut").disabled=true;
+	document.getElementById("bubbleSort").disabled=true;
+	document.getElementById("selectSort").disabled=true;
+	document.getElementById("fastSort").disabled=true;
+}
+function enableButton(){
+	document.getElementById("leftIn").disabled=false;
+	document.getElementById("rightIn").disabled=false;
+	document.getElementById("leftOut").disabled=false;
+	document.getElementById("rightOut").disabled=false;
+	document.getElementById("bubbleSort").disabled=false;
+	document.getElementById("selectSort").disabled=false;
+	document.getElementById("fastSort").disabled=false;
+}
+
+function bubbleSort(){
+	
+	var hei=getHeight();
+	var sorted=document.getElementById("sorted");
+	render(hei,sorted);
+    bubble(hei.length,sorted); 
+    //bubble();
+}
+
+function selectSort(){
+	var hei=getHeight();
+	var sorted=document.getElementById("sorted");
+	render(hei,sorted);
+	Select(hei.length,sorted);
+}
+
+function fastSort(){
+	var hei=getHeight();
+	var sorted=document.getElementById("sorted");
+	render(hei,sorted);
+    Fast(hei.length,sorted);
+    
+}
+
+function getHeight(){
+	var hei=new Array();
+	var children=parent.children;
+	for(var i=0;i<children.length;i++)
+	{
+		heiThis=children[i].children[0].style.height.slice(0,2);
+        hei.push(heiThis);
+	}
+	return hei;
+}
+
+function render(hei,sorted)
+{
+	while(sorted.hasChildNodes())
+	{
+		sorted.removeChild(sorted.firstChild);
+	}
+	
+	for(var i=0;i<hei.length;i++)
+	{
+		var numberDivBar=document.createElement("div");
+		var numberDivBarCore=document.createElement("div");
+		numberDivBarCore.style.height=hei[i];
+		numberDivBar.appendChild(numberDivBarCore);
+        sorted.appendChild(numberDivBar);
+	}
+}
+
+//冒泡排序
+function bubble(lengthHei,sorted){    //所有的setTimeout是同时调用的，所以在循环那里的时间都是用j*1000这样的模式弄的，如果只是1000，那么所有的定时就会同时开始算1秒后执行，用j*1000就能解决这个问题，可以在1s,2s,3s,4s......的时候分别执行；
+	//setTimeout是异步的，就是这个执行不耽误别的任何东西执行，所以如果你在底下只写alert("finish")是会立刻被输出来的，因为setTimeout不受它影响。所以如果想延时的部分之后继续执行一些函数，就得算所有延时的时间，在这之后的程序全写到setTimeout之后的函数里。像这里示范的。
+	/*
+	function setalert(i)
+	{
+		setTimeout(function(){for(var j=0;j<i;j++)
+		{
+			setalertCore(i,j);
+		}},(1+i)*i*500);
+    }
+    function setalertCore(i,j)
+    {
+    	setTimeout(function(){alert(i+"，"+j);},j*1000);
+    }
+	for(var i=0;i<8;i++)
+	{
+	    setalert(i);
+	}
+	*/
+
+    function bubbleInCore(j)
+    {
+        sorted.children[j].children[0].style.background='red';        
+            var before=sorted.children[j].children[0].style;
+            var after=sorted.children[j+1].children[0].style;
+    	    if(before.height<after.height)
+    	    {
+    		    var temp=before.height;
+    		    before.height=after.height;
+    		    after.height=temp;
+    	    }
+    	    sorted.children[j+1].children[0].style.background='green';
+    }
+    function bubbleOut(i)
+	{
+        setTimeout(function(){for(var j=0;j<lengthHei-1-i;j++)
+    	    {bubbleIn(j);}}	,500*i*(lengthHei*2-i-1));      
+	}
+
+	function bubbleIn(j)
+	{
+		setTimeout(function(){bubbleInCore(j);},j*1000);
+	}
+   	
+   	disableButton();
+    for(var i=0;i<lengthHei-1;i++)
+    {
+    	bubbleOut(i);            	   	
+    }
+    setTimeout(function(){
+    	sorted.children[0].children[0].style.background='green';enableButton();
+    },500*(lengthHei-1)*(lengthHei));
+    
+}
+
+
+//选择排序，每次选无序区最小的和无序区的第一个交换，然后有序区的元素就加了一个，有序区从0增加至length,无序区从length减少至0
+function Select(lengthHei,sorted){
+	function selectIn(i)
+	{
+		var temp=i;
+    	for(var j=i;j<lengthHei;j++)
+    	{
+            if(sorted.children[j].children[0].style.height<sorted.children[temp].children[0].style.height)
+            {
+            	temp=j;
+            }
+    	}
+    	var tempLen=sorted.children[i].children[0].style.height;
+    	sorted.children[i].children[0].style.height=sorted.children[temp].children[0].style.height;
+    	sorted.children[temp].children[0].style.height=tempLen;
+        sorted.children[i].children[0].style.background='green';
+	}
+
+	function selectOut(i)
+	{
+        setTimeout(function(){selectIn(i);},i*1000);
+	}
+
+    disableButton();
+    for(var i=0;i<lengthHei-1;i++)
+    {
+    	selectOut(i);
+    }
+
+    setTimeout(function(){sorted.children[lengthHei-1].children[0].style.background='green';enableButton();},(lengthHei-1)*1000);
+    
+}
+
+function Insert(lengthHei){
+
+}
+
+function Shell(lengthHei){
+
+}
+
+
+function Fast(lengthHei,sorted){
+	disableButton();    //这么看这个东西要放在timeout的上一层，不能再往外放了
+	var start=0;
+	var end=lengthHei-1;
+	var count=0;
+	fastCore(sorted,start,end);
+	setTimeout(function(){enableButton();},lengthHei*1000);
+}
+
+function fastCore(sorted,start,end)
+{	
+	setTimeout(function(){
+	if(start<end)
+	{
+		var startemp=start;
+		var endtemp=end;
+		var center=sorted.children[start].children[0].style.height;
+	    while(start<end)
+	    {
+	    	//alert("fast!");
+		    while(start<end && sorted.children[end].children[0].style.height>center)
+		    {
+		    	//alert("end--:"+end);
+                end--;
+		    }
+		    if(start<end)
+		    {
+		    	//alert("start赋值 start:"+start+"end:"+end);
+			    sorted.children[start++].children[0].style.height=sorted.children[end].children[0].style.height;
+		    }
+		
+		    while(start<end && sorted.children[start].children[0].style.height<center)
+		    {
+		    	//alert("start++:"+start);
+			    start++;
+		    }
+		    if(start<end)
+		    {
+		    	//alert("end赋值 start:"+start+"end:"+end);
+			    sorted.children[end--].children[0].style.height=sorted.children[start].children[0].style.height;
+		    }		
+	    }
+        sorted.children[start].children[0].style.height=center;
+        //sorted.children[start].children[0].style.border='1px solid black';
+        //有下边那个，这个就不用了。这一行可以加上试一试，会发现是和下面的背景是green的，如果走了这个if两个是一致的
+	    fastCore(sorted,startemp,start-1);
+	    fastCore(sorted,start+1,endtemp);
+	}
+	sorted.children[start].children[0].style.background='green';
+	//不是很清楚这个递归是咋算的，这个是可以的
+    },1000);
+}
+
+//23 76 87 99 34 67 78 23 45
+function Heap(lengthHei){
+
+}
+
+function Guibing(lengthHei){
+
+}
+
+</script>
+</body>
+</html>
