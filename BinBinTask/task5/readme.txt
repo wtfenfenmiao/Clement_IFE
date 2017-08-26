@@ -16,3 +16,5 @@
 建议不使用任何第三方库、框架
 
 http://www.cnblogs.com/zamhown/p/6412545.html
+
+快速排序：http://blog.csdn.net/morewindows/article/details/6684558  挖坑加分治，基准的那个数挖出来，等这一轮完了在填

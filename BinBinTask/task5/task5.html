@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <title>IFE JavaScript Task 05</title>
 <style type="text/css">
+.warning{
+	position: absolute;
+	right:40px;
+	top:20px;
+	width:200px;
+	color: red;
+}
 /*div小格格式
 #parent{
 	height:300px;
@@ -51,6 +58,7 @@
 </head>
 <body>
 <!--总要放纵自己去爱些东西  2017/08/24记录-->  
+<p class="warning">注意！这里排序的时间是不准确的，对算法的效率的认识不要受这个影响，和算法复杂度并不是严格的相关的！很多的timeout都没有写出来，这里的演示只是过程演示，不是算法复杂度的时间演示！</p>
 <input type="text" id="number">
 <button id="leftIn" onclick="leftIn()">左侧入</button>
 <button id="rightIn" onclick="rightIn()">右侧入</button>
@@ -61,7 +69,20 @@
 <button id="bubbleSort" onclick="bubbleSort()">冒泡排序</button>  <!--缺一个，如果是空的不让排序-->
 <button id="selectSort" onclick="selectSort()">选择排序</button>
 <button id="fastSort" onclick="fastSort()">快速排序</button>
+<button id="insertSort" onclick="insertSort()">插入排序</button>
+<button id="mergeSort" onclick="mergeSort()">归并排序</button>
 <div id="parent">
+<!--
+<div><div style="height:23px"></div></div>
+<div><div style="height:76px"></div></div>
+<div><div style="height:87px"></div></div>
+<div><div style="height:99px"></div></div>
+<div><div style="height:34px"></div></div>
+<div><div style="height:67px"></div></div>
+<div><div style="height:78px"></div></div>
+<div><div style="height:23px"></div></div>
+<div><div style="height:45px"></div></div>
+-->
 </div>
 <div id="sorted">
 </div>
@@ -71,6 +92,7 @@
  
 
 <script type="text/javascript">
+var timedelay=400;
 var parent=document.getElementById("parent");
 function leftIn(){
 	var number=document.getElementById("number").value;
@@ -202,6 +224,7 @@ function disableButton(){
 	document.getElementById("bubbleSort").disabled=true;
 	document.getElementById("selectSort").disabled=true;
 	document.getElementById("fastSort").disabled=true;
+	document.getElementById("insertSort").disabled=true;
 }
 function enableButton(){
 	document.getElementById("leftIn").disabled=false;
@@ -211,31 +234,91 @@ function enableButton(){
 	document.getElementById("bubbleSort").disabled=false;
 	document.getElementById("selectSort").disabled=false;
 	document.getElementById("fastSort").disabled=false;
+	document.getElementById("insertSort").disabled=false;
 }
 
-function bubbleSort(){
-	
+
+
+function bubbleSort(){	
 	var hei=getHeight();
-	var sorted=document.getElementById("sorted");
-	render(hei,sorted);
-    bubble(hei.length,sorted); 
+	if(hei.length==0)
+	{
+		alert("空！");
+	}
+	else
+	{
+        var sorted=document.getElementById("sorted");
+	    render(hei,sorted);
+        bubble(hei.length,sorted); 
+	}
+	
     //bubble();
 }
 
 function selectSort(){
 	var hei=getHeight();
-	var sorted=document.getElementById("sorted");
-	render(hei,sorted);
-	Select(hei.length,sorted);
+	if(hei.length==0)
+	{
+		alert("空！");
+	}
+	else
+	{
+	    var sorted=document.getElementById("sorted");
+	    render(hei,sorted);
+	    Select(hei.length,sorted);
+    }
 }
 
 function fastSort(){
 	var hei=getHeight();
-	var sorted=document.getElementById("sorted");
-	render(hei,sorted);
-    Fast(hei.length,sorted);
-    
+	if(hei.length==0)
+	{
+		alert("空！");
+	}
+	else
+	{
+	    var sorted=document.getElementById("sorted");
+	    render(hei,sorted);
+        Fast(hei.length,sorted);  
+    }
 }
+
+function insertSort(){
+	var hei=getHeight();
+	if(hei.length==0)
+	{
+		alert("空！");
+	}
+	else
+	{
+	    var sorted=document.getElementById("sorted");
+	    render(hei,sorted);
+        Insert(hei.length,sorted); 
+    } 
+}
+
+function mergeSort(){
+	var hei=getHeight();
+	if(hei.length==0)
+	{
+		alert("空！");
+	}
+	else
+	{
+	    var sorted=document.getElementById("sorted");
+	    render(hei,sorted);
+        Merge(hei.length,sorted); 
+    } 
+}
+
+function simStyle(sorted,i){
+	return sorted.children[i].children[0].style;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 
 function getHeight(){
 	var hei=new Array();
@@ -266,6 +349,30 @@ function render(hei,sorted)
 }
 
 //冒泡排序
+/*没有延时的
+function bubble(lengthHei,sorted){    
+   	disableButton();
+    for(var i=0;i<lengthHei-1;i++)
+    {
+    	for(var j=0;j<lengthHei-1-i;j++)
+    	{
+    		sorted.children[j].children[0].style.background='red';        
+            var before=sorted.children[j].children[0].style;
+            var after=sorted.children[j+1].children[0].style;
+    	    if(before.height>after.height)
+    	    {
+    		    var temp=before.height;
+    		    before.height=after.height;
+    		    after.height=temp;
+    	    }
+    	    sorted.children[j+1].children[0].style.background='green';
+    	}    	                	   	
+    }
+    sorted.children[0].children[0].style.background='green';
+    enableButton();    
+}
+*/
+
 function bubble(lengthHei,sorted){    //所有的setTimeout是同时调用的，所以在循环那里的时间都是用j*1000这样的模式弄的，如果只是1000，那么所有的定时就会同时开始算1秒后执行，用j*1000就能解决这个问题，可以在1s,2s,3s,4s......的时候分别执行；
 	//setTimeout是异步的，就是这个执行不耽误别的任何东西执行，所以如果你在底下只写alert("finish")是会立刻被输出来的，因为setTimeout不受它影响。所以如果想延时的部分之后继续执行一些函数，就得算所有延时的时间，在这之后的程序全写到setTimeout之后的函数里。像这里示范的。
 	/*
@@ -291,7 +398,7 @@ function bubble(lengthHei,sorted){    //所有的setTimeout是同时调用的，
         sorted.children[j].children[0].style.background='red';        
             var before=sorted.children[j].children[0].style;
             var after=sorted.children[j+1].children[0].style;
-    	    if(before.height<after.height)
+    	    if(before.height>after.height)
     	    {
     		    var temp=before.height;
     		    before.height=after.height;
@@ -302,12 +409,12 @@ function bubble(lengthHei,sorted){    //所有的setTimeout是同时调用的，
     function bubbleOut(i)
 	{
         setTimeout(function(){for(var j=0;j<lengthHei-1-i;j++)
-    	    {bubbleIn(j);}}	,500*i*(lengthHei*2-i-1));      
+    	    {bubbleIn(j);}}	,i*(lengthHei*2-i-1)*timedelay/2);      
 	}
 
 	function bubbleIn(j)
 	{
-		setTimeout(function(){bubbleInCore(j);},j*1000);
+		setTimeout(function(){bubbleInCore(j);},j*timedelay);
 	}
    	
    	disableButton();
@@ -317,12 +424,36 @@ function bubble(lengthHei,sorted){    //所有的setTimeout是同时调用的，
     }
     setTimeout(function(){
     	sorted.children[0].children[0].style.background='green';enableButton();
-    },500*(lengthHei-1)*(lengthHei));
+    },(lengthHei-1)*(lengthHei)*timedelay/2);
     
 }
 
 
 //选择排序，每次选无序区最小的和无序区的第一个交换，然后有序区的元素就加了一个，有序区从0增加至length,无序区从length减少至0
+/*没有延时的
+function Select(lengthHei,sorted){
+    disableButton();
+    for(var i=0;i<lengthHei-1;i++)
+    {
+    	var temp=i;
+    	for(var j=i;j<lengthHei;j++)
+    	{
+            if(sorted.children[j].children[0].style.height<sorted.children[temp].children[0].style.height)
+            {
+            	temp=j;
+            }
+    	}
+    	var tempLen=sorted.children[i].children[0].style.height;
+    	sorted.children[i].children[0].style.height=sorted.children[temp].children[0].style.height;
+    	sorted.children[temp].children[0].style.height=tempLen;
+        sorted.children[i].children[0].style.background='green';
+    }
+
+    sorted.children[lengthHei-1].children[0].style.background='green';
+    enableButton(); 
+}
+*/
+
 function Select(lengthHei,sorted){
 	function selectIn(i)
 	{
@@ -342,7 +473,7 @@ function Select(lengthHei,sorted){
 
 	function selectOut(i)
 	{
-        setTimeout(function(){selectIn(i);},i*1000);
+        setTimeout(function(){selectIn(i);},i*timedelay);
 	}
 
     disableButton();
@@ -351,18 +482,70 @@ function Select(lengthHei,sorted){
     	selectOut(i);
     }
 
-    setTimeout(function(){sorted.children[lengthHei-1].children[0].style.background='green';enableButton();},(lengthHei-1)*1000);
-    
+    setTimeout(function(){sorted.children[lengthHei-1].children[0].style.background='green';enableButton();},(lengthHei-1)*timedelay);    
 }
 
-function Insert(lengthHei){
 
+//插入排序
+/*没有延时的
+function Insert(lengthHei,sorted){
+	for(var i=1;i<lengthHei;i++)
+	{
+	    var insertThis=sorted.children[i].children[0].style.height;
+		var j=0;
+		for(j=0;j<i;j++)
+		{
+            if(sorted.children[j].children[0].style.height>insertThis)
+            {
+            	break;
+            }
+		}
+		for(var k=i;k>j;k--)
+		{
+			sorted.children[k].children[0].style.height=sorted.children[k-1].children[0].style.height;
+		}
+		sorted.children[j].children[0].style.height=insertThis;
+	}
 }
+*/
+//23 76 87 99 34 67 78 23 45
 
-function Shell(lengthHei){
+function Insert(lengthHei,sorted){
+	function insertMove(i,k){
+        setTimeout(function(){sorted.children[k].children[0].style.height=sorted.children[k-1].children[0].style.height;},(i-k)*timedelay);
+	}
 
+	function insertOut(i){
+		setTimeout(function(){
+			var insertThis=sorted.children[i].children[0].style.height;
+		    var j=0;
+		    for(j=0;j<i;j++)
+		    {
+                if(sorted.children[j].children[0].style.height>insertThis)
+                {
+            	    break;
+                }
+		    }     //此步骤寻找插入点，耗时j*timedelay(timedelay是单位时间)
+		    setTimeout(function(){
+		    	sorted.children[j].children[0].style.border='1px solid black';
+		        sorted.children[i].children[0].style.background='green';
+		        for(var k=i;k>j;k--)
+		        {
+		    	    insertMove(i,k);			    
+		        }
+		        setTimeout(function(){sorted.children[j].children[0].style.height=insertThis;
+		        	sorted.children[j].children[0].style.border='transparent';},(i-j)*timedelay);//此步骤移位，耗时(i-j)*timedelay
+		    	},j*timedelay);//(i-j)*timedelay+j*timedelay,是一次内层循环的时间，即i*timedelay
+		},(i+1)*i*timedelay/2);
+	}
+
+    disableButton();
+	for(var i=1;i<lengthHei;i++)
+	{
+		insertOut(i);	
+	}
+    setTimeout(function(){sorted.children[0].children[0].style.background='green';enableButton();},(lengthHei+1)*lengthHei*timedelay/2);
 }
-
 
 function Fast(lengthHei,sorted){
 	disableButton();    //这么看这个东西要放在timeout的上一层，不能再往外放了
@@ -370,8 +553,52 @@ function Fast(lengthHei,sorted){
 	var end=lengthHei-1;
 	var count=0;
 	fastCore(sorted,start,end);
-	setTimeout(function(){enableButton();},lengthHei*1000);
+	setTimeout(function(){enableButton();},lengthHei*timedelay);
 }
+
+/*没有延时的
+function fastCore(sorted,start,end)
+{	
+	if(start<end)
+	{
+		var startemp=start;
+		var endtemp=end;
+		var center=sorted.children[start].children[0].style.height;
+	    while(start<end)
+	    {
+	    	//alert("fast!");
+		    while(start<end && sorted.children[end].children[0].style.height>center)
+		    {
+		    	//alert("end--:"+end);
+                end--;
+		    }
+		    if(start<end)
+		    {
+		    	//alert("start赋值 start:"+start+"end:"+end);
+			    sorted.children[start++].children[0].style.height=sorted.children[end].children[0].style.height;
+		    }
+		
+		    while(start<end && sorted.children[start].children[0].style.height<center)
+		    {
+		    	//alert("start++:"+start);
+			    start++;
+		    }
+		    if(start<end)
+		    {
+		    	//alert("end赋值 start:"+start+"end:"+end);
+			    sorted.children[end--].children[0].style.height=sorted.children[start].children[0].style.height;
+		    }		
+	    }
+        sorted.children[start].children[0].style.height=center;
+        //sorted.children[start].children[0].style.border='1px solid black';
+        //有下边那个，这个就不用了。这一行可以加上试一试，会发现是和下面的背景是green的，如果走了这个if两个是一致的
+	    fastCore(sorted,startemp,start-1);
+	    fastCore(sorted,start+1,endtemp);
+	}
+	//sorted.children[start].children[0].style.background='green';
+	//不是很清楚这个递归是咋算的，这个是可以的
+}
+*/
 
 function fastCore(sorted,start,end)
 {	
@@ -414,17 +641,144 @@ function fastCore(sorted,start,end)
 	}
 	sorted.children[start].children[0].style.background='green';
 	//不是很清楚这个递归是咋算的，这个是可以的
-    },1000);
+    },timedelay);
 }
+
+//归并排序
+//非递归归并,这个演示只能靠alert了，不知道如何动态的搞......
+function Merge(lengthHei,sorted)
+{	
+	var mergeLen=1;
+	while(mergeLen<lengthHei)
+	{
+		//alert("mergeLen:"+mergeLen);
+		var assist=new Array(lengthHei);
+		var start=0;
+        while(start<lengthHei)
+        { 	
+        	//alert("start:"+start);
+            if((start+mergeLen)>=lengthHei)
+            {
+            	//alert("merge");
+            	for(var i=start;i<lengthHei;i++)
+            	{
+            		assist[i]=simStyle(sorted,i).height;
+            	}
+            	start+=mergeLen;
+            }
+            else
+            {
+            	//alert("mergelse");
+            	var k=start;
+            	var i=start;
+            	var j=start+mergeLen;
+            	var thisEnd=(j+mergeLen)>=lengthHei?lengthHei:(j+mergeLen);
+                while(i<(start+mergeLen) && j<thisEnd)
+                {
+                	//alert("while1 i:"+i+",j:"+j);
+                    if(simStyle(sorted,i).height<=simStyle(sorted,j).height)
+                    {
+                        assist[k++]=simStyle(sorted,i++).height;
+                    }
+                    else
+                    {
+                        assist[k++]=simStyle(sorted,j++).height;
+                    }
+                }
+                //alert("出while i:"+i+",j:"+j);
+                if(i>=(start+mergeLen))
+                {
+                	for(;j<thisEnd;j++)
+                	{
+                        assist[k++]=simStyle(sorted,j).height;
+                	}
+                }
+                else
+                {
+                	for(;i<(start+mergeLen);i++)
+                	{
+                		assist[k++]=simStyle(sorted,i).height;
+                	}
+                }
+                //alert("出else");
+                start=thisEnd;
+            }
+            
+            //alert("内assist："+assist);
+
+        }
+        mergeLen*=2;
+        for(var i=0;i<lengthHei;i++)
+        {
+        	simStyle(sorted,i).height=assist[i];
+        }
+        //alert("assist:"+assist);
+	}
+}
+/*递归的归并
+function Merge(lengthHei,sorted){
+	mergeCore(0,lengthHei-1,sorted);   
+}
+function mergeCore(start,end,sorted){
+    if(start==end)
+    {
+    	return;
+    }
+    else
+    {
+    	var center=Math.floor((start+end)/2);
+    	mergeCore(start,center,sorted);
+    	mergeCore(center+1,end,sorted);
+    	var assist=new Array(end-start+1);
+    	var i=start;
+    	var j=center+1;
+    	var k=0;
+    	while(i<=center && j<=end)
+    	{
+             if(simStyle(sorted,i).height<=simStyle(sorted,j).height)
+             {
+                 assist[k]=simStyle(sorted,i++).height;
+             }
+             else
+             {
+                 assist[k]=simStyle(sorted,j++).height;
+             }
+             k++;
+    	}
+    	if(i>center)
+    	{
+    		for(;j<=end;j++)
+    		{
+    			assist[k++]=simStyle(sorted,j).height;
+    		}
+    	}
+    	else
+    	{
+    		for(;i<=center;i++)
+    		{
+    			assist[k++]=simStyle(sorted,i).height;
+    		}
+    	}
+    	//alert(assist);
+    	for(var m=start;m<=end;m++)
+    	{
+    		simStyle(sorted,m).height=assist[m-start];
+    	}
+
+    }
+}
+*/
 
 //23 76 87 99 34 67 78 23 45
 function Heap(lengthHei){
 
 }
 
-function Guibing(lengthHei){
+function Shell(lengthHei){
 
 }
+
+
 
 </script>
 </body>
