@@ -1,0 +1,154 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 06</title>
+    <!--查询按键按下的时候会进行模糊匹配，不按了就复原了-->
+<style type="text/css">
+#parent{
+	height:60px;
+	overflow: auto;
+	margin-top: 10px;
+}
+#parent>div{
+	float:left;
+	margin-right: 10px;
+	padding: 0px 10px 0px 10px;
+	/*width:40px;*/
+	height:40px;
+	border:1px solid red;
+	background-color: red;
+	color:white;
+    text-align: center;
+    line-height: 40px;
+}
+
+
+</style>
+</head>
+<body>
+<textarea id="textAll" rows="10" cols="30"></textarea>
+<button id="leftIn" onclick="leftIn()">左侧入</button>
+<button id="rightIn" onclick="rightIn()">右侧入</button>
+&nbsp&nbsp&nbsp&nbsp
+<button id="leftOut" onclick="leftOut()">左侧出</button>
+<button id="rightOut" onclick="rightOut()">右侧出</button>
+&nbsp&nbsp&nbsp&nbsp
+<input type="text" id="searchIn">
+<button id="search" onmousedown="Search()" onmouseup="Reset()">查询 </button>
+<div id="parent">
+</div>
+
+ 
+
+<script type="text/javascript">
+var parent=document.getElementById("parent");
+function leftIn(){
+	var textAll=document.getElementById("textAll").value;
+	if(textAll=="")      //isNaN判断是否为数字，true不是false是
+	{
+		alert("请输入元素！");
+	}
+	else{
+        text=textAll.split(/,|，| |、|\n|\t|\r/);
+		for(var i=(text.length-1);i>=0;i--)
+		{
+			var numberDiv=document.createElement("div");      //创造元素，setAttribute可以给这个元素绑定id class等等等等
+            numberDiv.onclick=function(){clickDel(this)};
+            numberDiv.onmouseover=function(){onmouseDel(this)};
+            var numberIn=document.createTextNode(text[i]);     
+            numberDiv.appendChild(numberIn);
+            parent.insertBefore(numberDiv,parent.children[0]);    //在前面加新子节点
+		}       
+	}
+	//alert("长度"+parent.children.length);
+}
+
+function rightIn(){
+	var textAll=document.getElementById("textAll").value;
+	if(textAll=="")
+	{
+		alert("请输入元素！");
+	}
+	else{
+		text=textAll.split(/,|，| |、|\n|\r|\t/);
+		for(var i=0;i<text.length;i++)
+		{
+			var numberDiv=document.createElement("div");
+            numberDiv.onclick=function(){clickDel(this)};
+            numberDiv.onmouseover=function(){onmouseDel(this)};
+            var numberIn=document.createTextNode(text[i]);
+            numberDiv.appendChild(numberIn);
+            parent.appendChild(numberDiv);
+		}       
+	}
+}
+
+function leftOut(){
+	if(parent.children.length==0)
+	{
+		alert("空");
+	}
+	else
+	{
+		var number=parent.children[0].innerHTML;       //childNodes会带空节点，用children就不会
+		/*
+	    if(typeof(number)=="undefined"||number=="")    //typeof(value)=="undefined"判断是否是undefined
+	    {
+		    alert("空！");
+	    }
+	    */
+        alert(number);
+        parent.removeChild(parent.children[0]);
+	}	
+}
+
+function rightOut(){
+	var len=parent.children.length;
+	if(len==0)
+	{
+        alert("空");
+	}
+	else
+	{
+		var number=parent.children[len-1].innerHTML;        //这里别用lastchild和firstchild，不知道为什么，用这个的话，如果左侧填几个，右侧填几个，用leftout删完了左边的会没办法删右边的,左边的和右边的中间有个空，感觉像是childNodes和children比算了空结点一样。
+		/*
+	  if(typeof(number)=="undefined"||number=="")
+	    {
+		    alert("空！");
+	    }
+	*/
+        alert(number);
+        parent.removeChild(parent.children[len-1]);
+	}	
+}
+
+function clickDel(thisdiv){
+	parent.removeChild(thisdiv);
+}
+function onmouseDel(thisdiv){
+	thisdiv.style.cursor="hand";
+}
+
+function Search(){
+	searchEle=document.getElementById("searchIn").value;
+	for(var i=0;i<parent.children.length;i++)
+	{
+		if(parent.children[i].innerHTML.indexOf(searchEle)!=-1)
+		{
+			parent.children[i].style.background='green';
+		}
+	}
+}
+
+function Reset(){
+	for(var i=0;i<parent.children.length;i++)
+	{
+		parent.children[i].style.background='red';
+	}
+}
+
+
+</script>
+</body>
+</html>
