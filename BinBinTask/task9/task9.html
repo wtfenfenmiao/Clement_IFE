@@ -1,0 +1,341 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 09</title>
+<style type="text/css">
+#parent{
+	/*
+	background-color: red;
+	margin: 5px;
+	*/
+}
+#parent div{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	align-items: center;
+	flex:1;
+	margin: 1px;
+	padding: 6px;
+	border:1px solid black;
+	background-color: white;
+}
+</style>
+</head>
+<body>
+<input type="text" id="Height" placeholder="请输入高度">
+<input type="text" id="Jie" placeholder="请输入几叉树">
+<button id="Shengcheng" onclick="Shengcheng()">生成</button>    
+<button id="recurOrder" onclick="recurOrder()">递归遍历</button>
+<button id="noRecur" onclick="noRecur()">非递归(堆栈遍历)</button>
+&nbsp&nbsp&nbsp&nbsp
+<input type="text" id="searchCon" placeholder="请输入查询内容">
+<button id="search" onclick="search()">查询</button>
+<button id="reset" onclick="backWhite()">复原</button>
+&nbsp&nbsp&nbsp&nbsp
+<button id="Delete" onclick="Delete()">删除</button>
+&nbsp&nbsp&nbsp&nbsp
+<input type="text" id="addText" placeholder="请输入添加内容">
+<button id="Add" onclick="Add()">添加</button>
+<p>3 4比较合适，别的会，很不容易看效果......</p>
+<div id="parent">
+<!--
+	<div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+-->
+</div>
+
+
+ 
+
+<script type="text/javascript">
+var timer=0;      //设一个值然后累加，setTimeout技巧
+var Delay=200;
+var findNum=0;   //如果没找到这个就是0，找到了就是找到的个数，为了setTimeout的
+var selectArr=new Array();
+//治setTimeout的一个办法，用全局变量，然后随着timeout变，算变的时间，在变完的时候就能取这个值了
+function Shengcheng(){
+	parent=document.getElementById("parent");
+	while(parent.hasChildNodes())
+	{
+		parent.removeChild(parent.firstChild);
+	}
+	var n=document.getElementById("Height").value;
+	var m=document.getElementById("Jie").value;
+	if(n=="" || isNaN(n))
+	{
+		alert("请输入数字！");
+	}
+	else
+	{
+		if(n>7 || n<=0)
+		{
+			alert("请输入0到7之间的数字！");
+		}
+		else
+		{
+			
+            var Root=document.createElement("div");
+            Root.onclick=function(){selected(this,event)};
+            var str=1;
+            Root.innerHTML=str;
+            Root.setAttribute("id",str);
+            /*
+            if(n==1)
+            {
+            	Root.style.height=50;
+            }
+            */
+            parent.appendChild(Root);
+            	
+			creNode(parent.children[0],n-1,m,str);    //添加非根结点，生成满二叉树
+			//如果是
+			
+		}
+	}
+}
+
+function creNode(parent,n,m,str)
+{
+	if(n==0)
+    return;
+    for(var i=0;i<m;i++)
+    {
+    	var Ch=document.createElement("div");
+    	Ch.onclick=function(){selected(this,event)};
+    	Ch.className=i;
+    	var strTemp=str+"_"+(i+1);
+    	Ch.innerHTML=strTemp;
+    	Ch.setAttribute("id",strTemp);
+    	/*
+    	if(n==1)
+    	{
+    		Ch.style.height=50;
+    	}
+    	*/
+    	creNode(Ch,n-1,m,strTemp);
+    	parent.appendChild(Ch);
+    }
+}
+
+function backWhite(){
+	var Div=document.getElementsByTagName('div');
+    for(var i=0;i<Div.length;i++)
+    {
+    	Div[i].style.background='white';
+    	Div[i].style.border="1px solid black";
+    }
+    selectArr.splice(0,selectArr.length);
+    //alert("复原后："+selectArr);
+    
+}
+
+function disableButton(){
+    document.getElementById("Shengcheng").disabled=true;
+    document.getElementById("recurOrder").disabled=true;
+    document.getElementById("noRecur").disabled=true;
+    document.getElementById("search").disabled=true;
+}
+
+function enableButton(){
+    document.getElementById("Shengcheng").disabled=false;
+    document.getElementById("recurOrder").disabled=false;
+    document.getElementById("noRecur").disabled=false;
+    document.getElementById("search").disabled=false;
+}
+
+function recurOrder()
+{
+    backWhite();
+    disableButton();
+    parent=document.getElementById("parent");
+    recurOrderCore(parent.children[0]);
+    //alert(timer);  这个和下边注释的alert，打出来能理解下异步。setTimeout和别的程序真的是没关系，给完了setTimeout的参数后，setTimeout就自己玩去了，别的爱咋执行咋执行，两者互不干扰。preOrderCore里把timer都算完了给了setTimeout,然后setTimeout就等着时间到了执行去了，和其他的程序以及参数就没关系了，然后这个timer变成0之后也不会对已经算完的setTimeout有任何干扰，因为算完了setTimeout之后setTimeout就跑了自己去玩了......
+    setTimeout(function(){enableButton();},timer);
+    timer=0;        
+    //alert(timer);
+}
+
+function recurOrderCore(parent)
+{
+    show(parent);
+	var len=parent.children.length;
+    for(var i=0;i<len;i++)
+    {
+        recurOrderCore(parent.children[i]);        	
+    }	
+}
+
+function noRecur(){
+	backWhite();
+    disableButton();
+    parent=document.getElementById("parent");
+    noRecurCore(parent.children[0]);
+    setTimeout(function(){enableButton();},timer);
+    timer=0;        
+}
+
+function noRecurCore(parent){
+	var stack=new Array();
+	stack.push(parent);
+	while(stack.length!=0)
+	{
+		var temp=stack.pop();
+		show(temp);
+		for(var i=0;i<temp.children.length;i++)
+		{
+			stack.push(temp.children[i]);
+		}
+	}
+}
+
+function search()
+{
+	backWhite();
+	disableButton();
+	var content=document.getElementById("searchCon").value;
+	searchCore(content);
+	setTimeout(function(){
+		if(!findNum)
+		{
+			alert("没找到！");
+		}
+		enableButton();
+	},timer+=Delay);
+	timer=0;
+	findNum=0;
+
+}
+
+function searchCore(content)
+{
+	parent=document.getElementById("parent");
+	var stack=new Array();
+	stack.push(parent.children[0]);
+	while(stack.length!=0)
+	{
+		var temp=stack.pop();
+		showSearch(temp,content);
+		for(var i=0;i<temp.children.length;i++)
+		{
+			stack.push(temp.children[i]);
+		}
+	}
+}
+
+
+
+
+
+//这个是对的，这里show的setTimeout没有任何的嵌套，所以他们是自己玩的，并且同时执行
+function show(Node)
+{
+	setTimeout(function(){
+        Node.style.background='red';
+	},timer+=Delay);
+	setTimeout(function(){
+        Node.style.background='#D0D0D0';
+	},timer+=Delay);
+}
+
+function showSearch(Node,content)
+{
+	setTimeout(function(){
+        Node.style.background='red';
+	},timer+=Delay);
+	setTimeout(function(){
+        Node.style.background='#D0D0D0';
+	},timer+=Delay);
+	setTimeout(function(){
+		var find=Node.innerHTML.indexOf("<")==-1?Node.innerHTML:Node.innerHTML.slice(0,Node.innerHTML.indexOf("<"));
+		if(find==content)
+		    {
+			    Node.style.border="4px solid blue";
+			    findNum+=1;
+		    }
+	},timer+=Delay);
+}
+
+function selected(thisDiv,e)
+{
+	e.stopPropagation();       //防止冒泡，可以百度冒泡，不加这个就会冒泡
+    thisDiv.style.border="4px solid tomato";
+    selectArr.push(e.target.id);
+    //alert(selectArr);
+}
+
+function Delete()
+{
+	while(selectArr.length!=0)
+	{
+		sele=selectArr.pop();
+		var thisDel=document.getElementById(sele);
+		//alert("thisDel:"+thisDel);
+		if(!thisDel)
+		{
+			//alert("这个节点已经没了");
+			continue;
+		}
+		else
+		{
+			var parent=thisDel.parentNode.removeChild(thisDel);
+		}
+	}
+	//alert("删除后:"+selectArr);
+}
+
+
+function Add()
+{
+	//alert("selectArr:"+selectArr);
+	var content=document.getElementById("addText").value;
+	//alert("content:"+content);
+	while(selectArr.length!=0)
+	{
+		var Id=selectArr.pop();
+		//alert("Id:"+Id);
+		var Addthis=document.getElementById(Id);
+		var len=Addthis.children.length;
+		//alert("len:"+len);
+		var addEle=document.createElement("div");
+        addEle.innerHTML=content;
+        //alert("here");
+		if(len==0)
+		{
+			//alert("为0");
+			//addEle.style.height=50;      
+            addEle.setAttribute("id",Id+"_1");  
+
+		}
+		else
+		{
+			//alert("不为0");
+            var thisId=Addthis.children[len-1].id;
+            //alert("thisId1:"+thisId);
+            thisId=thisId.split("_");
+            //alert("thisId2:"+thisId);
+            thisId[thisId.length-1]=Number(thisId[thisId.length-1])+1;
+            //alert("thisId3:"+thisId);
+            thisId=thisId.join("_");
+            //alert("thisId4:"+thisId);
+            addEle.setAttribute("id",thisId);
+		}
+		addEle.onclick=function(){selected(this,event)};
+		Addthis.appendChild(addEle);
+		//alert("完成");
+	}
+	//alert("添加后："+selectArr);
+	backWhite();
+}
+</script>
+</body>
+</html>
