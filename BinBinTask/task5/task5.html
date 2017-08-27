@@ -409,7 +409,8 @@ function bubble(lengthHei,sorted){    //所有的setTimeout是同时调用的，
     function bubbleOut(i)
 	{
         setTimeout(function(){for(var j=0;j<lengthHei-1-i;j++)
-    	    {bubbleIn(j);}}	,i*(lengthHei*2-i-1)*timedelay/2);      
+    	    {bubbleIn(j);}}	,i*(lengthHei*2-i-1)*timedelay/2);  
+    	    //(i*lengthHei-i*(i+1)/2)*timedelay    
 	}
 
 	function bubbleIn(j)
@@ -512,7 +513,7 @@ function Insert(lengthHei,sorted){
 
 function Insert(lengthHei,sorted){
 	function insertMove(i,k){
-        setTimeout(function(){sorted.children[k].children[0].style.height=sorted.children[k-1].children[0].style.height;},(i-k)*timedelay);
+        setTimeout(function(){sorted.children[k].children[0].style.height=sorted.children[k-1].children[0].style.height;},(i-k)*timedelay);  
 	}
 
 	function insertOut(i){
@@ -525,7 +526,8 @@ function Insert(lengthHei,sorted){
                 {
             	    break;
                 }
-		    }     //此步骤寻找插入点，耗时j*timedelay(timedelay是单位时间)
+		    }     
+		    //此setTimeout寻找插入点后执行，寻找插入点耗时j*timedelay(timedelay是单位时间)
 		    setTimeout(function(){
 		    	sorted.children[j].children[0].style.border='1px solid black';
 		        sorted.children[i].children[0].style.background='green';
@@ -533,9 +535,12 @@ function Insert(lengthHei,sorted){
 		        {
 		    	    insertMove(i,k);			    
 		        }
+		        //此setTimeout步骤移位后执行，移位(insertMove)共耗时(i-j)*timedelay
 		        setTimeout(function(){sorted.children[j].children[0].style.height=insertThis;
-		        	sorted.children[j].children[0].style.border='transparent';},(i-j)*timedelay);//此步骤移位，耗时(i-j)*timedelay
-		    	},j*timedelay);//(i-j)*timedelay+j*timedelay,是一次内层循环的时间，即i*timedelay
+		        	sorted.children[j].children[0].style.border='transparent';
+		        },(i-j)*timedelay);
+		    },j*timedelay);
+		    //(i-j)*timedelay+j*timedelay,是一次内层循环的时间，即i*timedelay
 		},(i+1)*i*timedelay/2);
 	}
 

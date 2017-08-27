@@ -15,6 +15,13 @@
 具体算法及可视化的形式不做特别限制，只要求能够展现出算法的过程
 建议不使用任何第三方库、框架
 
-http://www.cnblogs.com/zamhown/p/6412545.html
+关于setTimeout的一个博客：http://www.cnblogs.com/zamhown/p/6412545.html
+
+setTimeout是异步的，概念比较难理解，多看看。
+此程序里用setTimeout的思路就是所有的位于一层setTimeout几乎同时执行（因为其它的程序执行的很快，几乎不占用时间）
+（但是嵌套的不是同时，每一层的同时，下一层在上一层的基础上累加，看那个for二重循环的alert小例子就明白了），
+然后算每个的延迟时间
 
 快速排序：http://blog.csdn.net/morewindows/article/details/6684558  挖坑加分治，基准的那个数挖出来，等这一轮完了在填
+
+此程序目前实现了冒泡，选择，插入，快排，归并

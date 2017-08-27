@@ -1,0 +1,275 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 07</title>
+<style type="text/css">
+#parent{
+	/*
+	background-color: red;
+	margin: 5px;
+	*/
+}
+#parent div{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	align-items: center;
+	flex:1;
+	margin: 1px;
+	padding: 6px;
+	border:1px solid black;
+	background-color: white;
+}
+</style>
+</head>
+<body>
+<input type="text" id="Height">
+<button id="Shengcheng" onclick="Shengcheng()">生成</button>    
+<button id="preOrder" onclick="preOrder()">前序遍历</button>
+<button id="midOrder" onclick="midOrder()">中序遍历</button>
+<button id="afterOrder" onclick="afterOrder()">后序遍历</button>
+<div id="parent">
+<!--
+	<div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+-->
+</div>
+
+
+ 
+
+<script type="text/javascript">
+var timer=0;      //设一个值然后累加，setTimeout技巧
+var Delay=500;
+function Shengcheng(){
+	parent=document.getElementById("parent");
+	while(parent.hasChildNodes())
+	{
+		parent.removeChild(parent.firstChild);
+	}
+	var n=document.getElementById("Height").value;
+	if(n=="" || isNaN(n))
+	{
+		alert("请输入数字！");
+	}
+	else
+	{
+		if(n>7 || n<=0)
+		{
+			alert("请输入0到7之间的数字！");
+		}
+		else
+		{
+			
+            var Root=document.createElement("div");
+            if(n==1)
+            {
+            	Root.style.height=50;
+            }
+            parent.appendChild(Root);	
+			creNode(parent.children[0],n-1);    //添加非根结点，生成满二叉树
+			//如果是
+			
+		}
+	}
+}
+
+function creNode(parent,n)
+{
+	if(n==0)
+    return;
+	var leftCh=document.createElement("div");
+	leftCh.className="Left";
+	var rightCh=document.createElement("div");
+	rightCh.className="Right";
+	if(n==1)
+	{
+		leftCh.style.height=50;
+		rightCh.style.height=50;
+	}
+	parent.appendChild(leftCh);
+	parent.appendChild(rightCh);
+	creNode(parent.children[0],n-1);
+	creNode(parent.children[1],n-1);
+}
+
+function backWhite(){
+
+	var Div=document.getElementsByTagName('div');
+    for(var i=0;i<Div.length;i++)
+    {
+    	Div[i].style.background='white';
+    }
+}
+
+function disableButton(){
+    document.getElementById("Shengcheng").disabled=true;
+    document.getElementById("preOrder").disabled=true;
+    document.getElementById("midOrder").disabled=true;
+    document.getElementById("afterOrder").disabled=true;
+}
+
+function enableButton(){
+    document.getElementById("Shengcheng").disabled=false;
+    document.getElementById("preOrder").disabled=false;
+    document.getElementById("midOrder").disabled=false;
+    document.getElementById("afterOrder").disabled=false;
+}
+
+function preOrder()
+{
+    backWhite();
+    disableButton();
+    parent=document.getElementById("parent");
+    preOrderCore(parent.children[0]);
+    //alert(timer);  这个和下边注释的alert，打出来能理解下异步。setTimeout和别的程序真的是没关系，给完了setTimeout的参数后，setTimeout就自己玩去了，别的爱咋执行咋执行，两者互不干扰。preOrderCore里把timer都算完了给了setTimeout,然后setTimeout就等着时间到了执行去了，和其他的程序以及参数就没关系了，然后这个timer变成0之后也不会对已经算完的setTimeout有任何干扰，因为算完了setTimeout之后setTimeout就跑了自己去玩了......
+    setTimeout(function(){enableButton();},timer);
+    timer=0;        
+    //alert(timer);
+}
+function midOrder()
+{
+	backWhite();
+	disableButton();
+    parent=document.getElementById("parent");
+    midOrderCore(parent.children[0]);
+    setTimeout(function(){enableButton();},timer);
+    timer=0;
+}
+
+function afterOrder(){
+	backWhite();
+	disableButton();
+	parent=document.getElementById("parent");
+    afterOrderCore(parent.children[0]);
+    setTimeout(function(){enableButton();},timer);
+    timer=0;
+}
+
+function preOrderCore(parent)
+{
+	if(parent==null)
+		return;
+	var leftCh=null;
+	var rightCh=null;
+	var numNode=parent.children.length;
+	if(numNode==2)
+	{
+        leftCh=parent.children[0];
+        rightCh=parent.children[1];
+	}
+	else if(numNode==1)
+	{
+		if(parent.children[0].className=="left")
+		{
+			leftCh=parent.children[0];
+		}
+		else
+		{
+			rightCh=parent.children[0];
+		}
+	}
+	//alert("这里");
+	//alert("left:"+leftCh);
+	//alert("right:"+rightCh);
+	//alert("length"+numNode);
+	show(parent);
+	/*这样子写在这个位置替代show(parent)也行，这个parent因为递归不断地执行preOrderCore，所以每次的parent都是自己私有的，不会有setTimeout共享一个变量的问题
+	setTimeout(function(){
+        parent.style.background='red';
+	},timer+=Delay);
+	setTimeout(function(){
+        parent.style.background='#D0D0D0';
+	},timer+=Delay);
+	*/
+	preOrderCore(leftCh);
+	preOrderCore(rightCh);
+}
+
+function midOrderCore(parent)
+{
+	if(parent==null)
+		return;
+	var leftCh=null;
+	var rightCh=null;
+	var numNode=parent.children.length;
+	if(numNode==2)
+	{
+        leftCh=parent.children[0];
+        rightCh=parent.children[1];
+	}
+	else if(numNode==1)
+	{
+		if(parent.children[0].className=="left")
+		{
+			leftCh=parent.children[0];
+		}
+		else
+		{
+			rightCh=parent.children[0];
+		}
+	}
+	//alert("这里");
+	//alert("left:"+leftCh);
+	//alert("right:"+rightCh);
+	//alert("length"+numNode);
+	midOrderCore(leftCh);
+	show(parent);
+	midOrderCore(rightCh);
+}
+
+function afterOrderCore(parent)
+{
+	if(parent==null)
+		return;
+	var leftCh=null;
+	var rightCh=null;
+	var numNode=parent.children.length;
+	if(numNode==2)
+	{
+        leftCh=parent.children[0];
+        rightCh=parent.children[1];
+	}
+	else if(numNode==1)
+	{
+		if(parent.children[0].className=="left")
+		{
+			leftCh=parent.children[0];
+		}
+		else
+		{
+			rightCh=parent.children[0];
+		}
+	}
+	//alert("这里");
+	//alert("left:"+leftCh);
+	//alert("right:"+rightCh);
+	//alert("length"+numNode);
+	afterOrderCore(leftCh);
+	afterOrderCore(rightCh);
+	show(parent);
+}
+
+
+//这个是对的，这里show的setTimeout没有任何的嵌套，所以他们是自己玩的，并且同时执行
+function show(Node)
+{
+	setTimeout(function(){
+        Node.style.background='red';
+	},timer+=Delay);
+	setTimeout(function(){
+        Node.style.background='#D0D0D0';
+	},timer+=Delay);
+}
+</script>
+</body>
+</html>
