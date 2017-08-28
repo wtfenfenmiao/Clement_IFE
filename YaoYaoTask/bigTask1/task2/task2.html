@@ -1,0 +1,313 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>task2</title>
+<style type="text/css">
+p{
+	margin: 0px 0px 0px 110px;
+	padding: 0px;
+	font-size: 10px;
+}
+
+label
+{
+	text-align: right;  /*label对齐的方式*/
+	float:left;
+	width:100px;
+	margin-top:8px;
+}
+
+input{
+	height:20px;
+	margin: 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div>
+<label for="name">名称</label><input type="text" id="name"/>
+<p id="nameAlert">必填，长度为4~16字符</p>
+</div>
+<div>
+<label for="pwd">密码</label><input type="password" id="pwd"/>
+<p id="pwdAlert">6~18位，只能且必须由字母、数字、特殊符号组成</p>
+</div>
+<div>
+<label for="pwdCon">密码确认</label><input type="password" id="pwdCon"/>
+<p id="pwdConAlert">再次输入相同密码</p>
+</div>
+<div>
+<label for="email">邮箱</label><input type="text" id="email"/>
+<p id="nameAlert">邮箱由字母、数字、下划线、中划线组成，只能是英文域名</p>
+</div>
+<div>
+<label for="phone">手机</label><input type="text" id="phone"/>
+<p id="phoneAlert">输入11位数字</p>
+</div>
+<input type="submit" id="sub" onclick="Sub()" name="提交"/>
+
+
+
+
+<script type="text/javascript">
+hidAll();
+binding();
+function binding()
+{
+    var g=document.getElementsByTagName("input");
+    for(var i=0;i<g.length;i++)
+    {
+    	if(g[i].type=="text" || g[i].type=="password")
+    	{
+    		//alert("i:"+i+" text:"+g[i].type);
+    		g[i].onblur=function(){showReAlert(this)};
+    		g[i].onfocus=function(){showAlert(this)};
+    	}
+    }
+}
+
+function hidAll()
+{ 
+    var p=document.getElementsByTagName("p");
+    for(var i=0;i<p.length;i++)
+    {
+    	p[i].style.visibility="hidden";
+    	p[i].style.height=0;
+    }
+}
+function showReAlert(thisEle)
+{
+	var Id=thisEle.id;
+	var content=thisEle.value;
+	var p=thisEle.parentNode.getElementsByTagName("p")[0];
+	switch(Id)
+	{
+		case "name":nameConfirm(thisEle,content,p);break;
+		case "pwd" :pwdConfirm(thisEle,content,p);break;
+		case "pwdCon":pwdConConfirm(thisEle,content,p);break;
+		case "email":emailConfirm(thisEle,content,p);break;
+		case "phone":phoneConfirm(thisEle,content,p);break;
+		default:break;
+	}
+}
+
+function showAlert(thisEle)
+{
+	//alert(thisEle.id+"获得焦点！");
+	thisEle.parentNode.getElementsByTagName("p")[0].style.visibility="visible";
+	thisEle.parentNode.getElementsByTagName("p")[0].style.height=20;
+	//alert(thisEle.parentNode.getElementsByTagName("p")[0].innerHTML);
+}
+
+function pWrong(p,thisEle)
+{
+    p.style.visibility="visible";
+    p.style.height=20;
+	p.style.color='red';
+	thisEle.style.border="1px solid red";
+}
+
+function pRight(p,thisEle)
+{
+	p.style.visibility="visible";
+    p.style.height=20;
+    p.style.color='green';
+	thisEle.style.border="1px solid green";
+}
+function nameConfirm(thisEle,content,p)
+{
+	var flag=false;
+    var strLen=0;
+	if(content.length==0)
+	{
+		//alert("this");
+		p.innerHTML="姓名不能为空！";
+		pWrong(p,thisEle);
+		//alert("finish");
+	}
+	else
+	{
+		//alert("that");
+		for(var i=0;i<content.length;i++)
+	    {
+		    if(content.charCodeAt(i)>255)           //Unicode编码匹配，不行用正则表达式也行
+		    {
+                strLen+=2;
+		    }
+		    else 
+		    {
+		        strLen+=1;
+		    }
+	    }
+	    //alert("长度"+strLen);
+	    if(strLen>16 || strLen<4)
+	    {
+		    p.innerHTML="长度要在4到16个字符范围内！";
+		    pWrong(p,thisEle);
+	    }
+	    else
+	    {
+		    p.innerHTML="正确！";
+		    pRight(p,thisEle);
+		    flag=true;
+	    }
+	} 
+	p.style.visibility="visible";   
+	return flag;
+
+}
+
+function pwdConfirm(thisEle,content,p)
+{
+	var reg =/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{6,18}$/;
+	var flag=false;
+	if(content.length==0)
+	{
+		p.innerHTML="密码不能为空！";
+		pWrong(p,thisEle);
+	}
+	else
+	{
+		if(reg.test(content))
+	    {
+            p.innerHTML="正确！";
+		    pRight(p,thisEle);
+		    flag=true;
+	    }
+	    else
+	    {
+	    	p.innerHTML="输入格式错误！";
+		    pWrong(p,thisEle);
+	    }
+	}
+	return flag;
+	//这个是只能并且必须都有字母数字特殊符号
+	//n{X,Y},X和Y为正整数，前面的模式n连续出现至少X次，最多Y次时匹配，这里就是前面这一堆至少出现6次，最多出现18次
+	//$匹配字符串结束
+	//^匹配字符串开始
+	//?=n 匹配任何其后紧接指定字符串n的字符串
+	//\d是数字
+	//*重复零次或多次
+	//.匹配除换行符外任意字符  
+	//?重复零次或一次
+	//{n,m}重复n到m次
+	//?=exp 字符后面必须有exp
+	
+}
+
+function pwdConConfirm(thisEle,content,p)
+{
+	var flag=false;
+	if(content.length==0)
+	{
+		p.innerHTML="密码不能为空！";
+		pWrong(p,thisEle);
+	}
+	else
+	{
+		if(document.getElementById("pwd").value==content)
+	    {
+            p.innerHTML="正确！";
+		    pRight(p,thisEle);
+		    flag=true;
+	    }
+	    else
+	    {
+	    	p.innerHTML="与之前密码不符！";
+		    pWrong(p,thisEle);
+	    }
+	}
+	return flag;
+}
+
+function emailConfirm(thisEle,content,p)
+{
+	var reg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+	var flag=false;
+	if(content.length==0)
+	{
+		p.innerHTML="邮箱不能为空！";
+		pWrong(p,thisEle);
+	}
+	else
+	{
+		if(reg.test(content))
+	    {
+            p.innerHTML="正确！";
+		    pRight(p,thisEle);
+		    flag=true;
+	    }
+	    else
+	    {
+	    	p.innerHTML="格式错误！";
+		    pWrong(p,thisEle);
+	    }
+	}
+	return flag;
+}
+
+function phoneConfirm(thisEle,content,p)
+{
+	var reg=/^\d{11}$/;
+	var flag=false;
+	if(content.length==0)
+	{
+		p.innerHTML="手机号不能为空！";
+		pWrong(p,thisEle);
+	}
+	else
+	{
+		if(reg.test(content))
+	    {
+            p.innerHTML="正确！";
+		    pRight(p,thisEle);
+		    flag=true;
+	    }
+	    else
+	    {
+	    	p.innerHTML="格式错误！";
+		    pWrong(p,thisEle);
+	    }
+	}
+	return flag;
+}
+
+
+
+function Sub()
+{
+	function getEle(Id)
+	{
+		return document.getElementById(Id);
+	}
+	function getContent(Id)
+	{
+		return document.getElementById(Id).value;
+	}
+	function getP(Id)
+	{
+		return document.getElementById(Id).parentNode.getElementsByTagName("p")[0];
+	}
+	
+    var flag1=nameConfirm(getEle("name"),getContent("name"),getP("name"));
+    var flag2=pwdConfirm(getEle("pwd"),getContent("pwd"),getP("pwd"));
+    var flag3=pwdConConfirm(getEle("pwdCon"),getContent("pwdCon"),getP("pwdCon"));
+    var flag4=emailConfirm(getEle("email"),getContent("email"),getP("email"));
+    var flag5=phoneConfirm(getEle("phone"),getContent("phone"),getP("phone"));
+	if(flag1 && flag2 && flag3 && flag4 && flag5)
+	{
+		alert("提交成功！");
+	}
+	else
+	{
+		alert("提交失败！");
+	}
+}
+
+
+</script>
+</body>
+</html>

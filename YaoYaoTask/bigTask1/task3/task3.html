@@ -1,0 +1,117 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>task2</title>
+<style type="text/css">
+*{
+	margin:0px;
+	padding: 0px;
+}
+#choose{
+	padding: 10px 0 10px 0;
+}
+
+
+div{
+	margin-left: 10px;
+}
+</style>
+</head>
+<body>
+<form>
+    <div id="choose">
+    <input type="radio" name="state" id="inSchool" onclick="choose()" checked>在校生
+    <input type="radio" name="state" id="notInSchool" onclick="choose()">非在校生
+    </div>
+    <div id="inChoose">
+        学校:
+        <select id="city" onchange="SelectUniver()">
+        </select>
+        <select id="school">
+        </select>
+    </div>
+    <div id="outChoose">
+        就业单位：
+        <input type="text">
+    </div>
+</form>
+
+
+
+
+
+<script type="text/javascript">
+    var City=new Array("北京","上海","辽宁");   
+    //不知道为什么，以前写表单，总是会写北上广深，这次突然想改成辽宁。我是长大了，还是老了。
+    var Univer=new Array();
+    Univer[0]=new Array("北京邮电大学","北京理工大学","北京交通大学");
+    //去他妈的清华北大
+    Univer[1]=new Array("复旦大学","同济大学","上海财经大学");
+    Univer[2]=new Array("辽宁大学","东北大学","大连理工大学");
+init();
+function init()
+{ 
+    document.getElementById("outChoose").style.visibility="hidden";
+    SelectCity();
+    SelectUniver();
+}
+
+function SelectCity()
+{
+    var SelectCi=document.getElementById("city");    
+    for(var i=0;i<City.length;i++)
+    {
+    	var op=document.createElement("option");
+    	op.setAttribute("value",i);
+    	op.innerHTML=City[i];
+    	SelectCi.appendChild(op);
+    }
+    //alert("that");
+}
+
+function SelectUniver()
+{
+	//alert("this");
+	var SelectUni=document.getElementById("school");
+	var thisSe=document.getElementById("city");
+	while(SelectUni.hasChildNodes())
+	{
+		SelectUni.removeChild(SelectUni.firstChild);
+	}
+	var index=thisSe.options[thisSe.selectedIndex].value;
+	//alert(index);
+	var thisUniver=Univer[index];
+	//alert(thisUniver);
+	//alert(thisUniver.length);
+	for(var i=0;i<thisUniver.length;i++)
+	{
+        var op=document.createElement("option");
+        op.setAttribute("value",i);
+        op.innerHTML=thisUniver[i];
+        //alert(thisUniver[i]);
+        SelectUni.appendChild(op);
+	}
+}
+
+function choose()
+{
+	if(document.getElementById("inSchool").checked)
+	{
+		document.getElementById("outChoose").style.visibility="hidden";
+		document.getElementById("outChoose").style.height=0;
+		document.getElementById("inChoose").style.visibility="visible";
+		document.getElementById("inChoose").style.height=50;
+	}
+	else if(document.getElementById("notInSchool").checked)
+	{
+		document.getElementById("outChoose").style.visibility="visible";
+		document.getElementById("outChoose").style.height=50;
+		document.getElementById("inChoose").style.visibility="hidden";
+		document.getElementById("inChoose").style.height=0;
+	}
+}
+
+</script>
+</body>
+</html>

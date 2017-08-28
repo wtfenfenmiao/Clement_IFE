@@ -1,0 +1,61 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>task1</title>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<input type="text" id="content">
+<button id="confirm" onclick="confirm()">验证</button>
+<p id="alert">必填，长度为4~16字符</p>
+
+
+<script type="text/javascript">
+function confirm()
+{
+	var strLen=0;
+	content=document.getElementById("content").value;
+	if(content.length==0)
+	{
+		//alert("this");
+		document.getElementById("alert").innerHTML="姓名不能为空！";
+		document.getElementById("alert").style.color='red';
+		document.getElementById("content").style.border="1px solid red";
+		//alert("finish");
+	}
+	else
+	{
+		//alert("that");
+		for(var i=0;i<content.length;i++)
+	    {
+		    if(content.charCodeAt(i)>255)           //Unicode编码匹配，不行用正则表达式也行
+		    {
+                strLen+=2;
+		    }
+		    else 
+		    {
+		        strLen+=1;
+		    }
+	    }
+	    //alert("长度"+strLen);
+	    if(strLen>16 || strLen<4)
+	    {
+		    document.getElementById("alert").innerHTML="长度要在4到16个字符范围内！";
+		    document.getElementById("alert").style.color='red';
+		    document.getElementById("content").style.border="1px solid red";
+	    }
+	    else
+	    {
+		    document.getElementById("alert").innerHTML="正确！";
+		    document.getElementById("alert").style.color='green';
+		    document.getElementById("content").style.border="1px solid green";
+	    }
+	}    
+}
+
+</script>
+</body>
+</html>
