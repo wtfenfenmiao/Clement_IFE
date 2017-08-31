@@ -1,0 +1,537 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>task5</title>
+<style type="text/css">
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.bor{                /*整个table和外边的距离*/
+    margin:30px;
+}
+
+.center{             /*编号居中*/
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+
+table{
+    border-collapse: collapse;
+    border-style:none;
+    border-right:1px solid black;
+    border-bottom: 1px solid black;
+    width: 100%;
+}
+
+tr{
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+}
+
+td{
+    box-sizing: border-box;
+    flex:1;
+    position: relative;
+    border:1px solid #D0D0D0;
+    margin-right: -2px;
+    margin-bottom: -2px;
+}
+
+.tran,.tran1,.tran2{
+    border:2px solid white;
+}
+
+.tran1{
+    border-bottom: 2px solid black;
+}
+
+.tran2{
+    border-right:2px solid black;
+}
+
+input{
+    margin-top:10%;
+    margin-left: 10%;
+}
+
+</style>
+</head>
+<body>
+<div class="bor">
+<table border="1">
+<!--
+    <tr value="0" class="tran">
+        <td></td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+    </tr>
+    <tr value="1">
+        <td class="tran">1</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+    <tr value="2">
+        <td class="tran">2</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+    <tr value="3">
+        <td class="tran">3</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+    <tr value="4">
+        <td class="tran">4</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+-->
+</table>
+<input type="text" id="command">
+<input type="submit" value="执行" onclick="execute()">
+</div>
+
+<script type="text/javascript">
+var size=10;
+initBlock();
+RandomBlock();
+function initBlock()
+{   
+    function setTd(td,i)
+    {
+        var div=document.createElement("div");
+        div.style.paddingTop="100%";            
+        //用这个搞出来小正方形。padding是根据父元素宽度来的。这个div只是为了小正方形，其他什么都不管。把它设置成relative，然后子元素absolute，子元素就不会影响这个正方形了
+        div.style.position="relative";
+        var inner=document.createElement("div");
+        inner.innerHTML=i;                         //inner为了能不影响正方形的加文本
+        inner.setAttribute("class","center");
+        div.appendChild(inner);
+        td.appendChild(div);
+    }
+
+    function setBlock(td,j)     //在中间的小格子里放正方形div用
+    {
+        var div=document.createElement("div");
+        div.style.paddingTop="100%";
+        div.style.position="relative";
+        td.appendChild(div);
+        td.setAttribute("value",j);
+    }
+
+    var table=document.getElementsByTagName("table")[0];   
+    var tr=new Array();
+    tr[0]=document.createElement("tr");
+    var tdNone=document.createElement("td");
+    tdNone.setAttribute("class","tran");
+    var divNone=document.createElement("div");
+    divNone.style.paddingTop="100%";
+    tdNone.appendChild(divNone);
+    tr[0].appendChild(tdNone);
+    
+    //这一堆都是生成初始的格子图的
+    for(var i=1;i<=size;i++)
+    {
+        tr[i]=document.createElement("tr");
+        var td1=document.createElement("td");
+        td1.setAttribute("class","tran1");
+        setTd(td1,i);
+        tr[0].appendChild(td1);
+        var td2=document.createElement("td");
+        td2.setAttribute("class","tran2");
+        setTd(td2,i);
+        tr[i].appendChild(td2);
+        tr[i].setAttribute("value",i);
+
+        for(var j=1;j<=size;j++)
+        {
+            var td=document.createElement("td");
+            setBlock(td,j);
+            //td.style.width="(1/11)%";
+            tr[i].appendChild(td);
+        }
+    }
+
+    table.appendChild(tr[0]);
+    //alert("this");
+    for(var i=1;i<=size;i++)
+    {     
+        table.appendChild(tr[i]);        
+    }
+}
+
+//随机初始化红蓝小方块的位置和方向
+function RandomBlock(){
+    var x=Math.ceil(Math.random()*size);
+    var y=Math.ceil(Math.random()*size);
+    var dir=Math.floor(Math.random()*4);
+    var x_axis=document.getElementsByTagName("tr")[x];
+    var y_axis=x_axis.children[y].getElementsByTagName("div")[0];
+    //dirRight(y_axis);
+    switch(dir)
+    {
+        case 0:dirTop(y_axis);break;
+        case 1:dirRight(y_axis);break;
+        case 2:dirBottom(y_axis);break;
+        case 3:dirLeft(y_axis);break;
+        default:break;
+    }
+}
+
+//在给定位置生成给定方向的红蓝小方格
+function dirTop(thisTd){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    divBlue.setAttribute("id","blue");
+    divBlue.setAttribute("value","top");
+    divBlue.style.width="100%";
+    divBlue.style.height="25%";
+    divBlue.style.background="blue";
+    divBlue.style.position="absolute";
+    divBlue.style.top="1";
+    divRed.style.width="100%";
+    divRed.style.height="75%";
+    divRed.style.background="red";
+    divRed.style.position="absolute";
+    divRed.style.bottom="-1";
+    thisTd.appendChild(divBlue);
+    thisTd.appendChild(divRed);
+}
+
+function dirBottom(thisTd){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    divBlue.setAttribute("id","blue");
+    divBlue.setAttribute("value","bottom");
+    divBlue.style.width="100%";
+    divBlue.style.height="25%";
+    divBlue.style.background="blue";
+    divBlue.style.position="absolute";
+    divBlue.style.bottom="-1";
+    divRed.style.width="100%";
+    divRed.style.height="75%";
+    divRed.style.background="red";
+    divRed.style.position="absolute";
+    divRed.style.top="1";
+    thisTd.appendChild(divBlue);
+    thisTd.appendChild(divRed);
+}
+
+function dirRight(thisTd){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    divBlue.setAttribute("id","blue");
+    divBlue.setAttribute("value","right");
+    divBlue.style.width="25%";
+    divBlue.style.height="100%";
+    divBlue.style.background="blue";
+    divBlue.style.position="absolute";
+    divBlue.style.right="0";
+    divBlue.style.top="1";
+    divRed.style.width="75%";
+    divRed.style.height="100%";
+    divRed.style.background="red";
+    divRed.style.position="absolute";
+    divRed.style.left="0";
+    divRed.style.top="1";
+    thisTd.appendChild(divBlue);
+    thisTd.appendChild(divRed);
+}
+
+function dirLeft(thisTd){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    divBlue.setAttribute("id","blue");
+    divBlue.setAttribute("value","left");
+    divBlue.style.width="25%";
+    divBlue.style.height="100%";
+    divBlue.style.background="blue";
+    divBlue.style.position="absolute";
+    divBlue.style.left="0";
+    divBlue.style.top="1";
+    divRed.style.width="75%";
+    divRed.style.height="100%";
+    divRed.style.background="red";
+    divRed.style.position="absolute";
+    divRed.style.right="0";
+    divRed.style.top="1";
+    thisTd.appendChild(divBlue);
+    thisTd.appendChild(divRed);
+}
+
+//点击执行
+function execute()
+{
+    //获取文字内容，当前红蓝方块的位置方向信息
+    var command=document.getElementById("command").value;
+    //alert(command);
+    var blue=document.getElementById("blue");
+    var y=blue.parentNode.parentNode.getAttribute("value");
+    //alert("y:"+y);
+    var x=blue.parentNode.parentNode.parentNode.getAttribute("value");
+    //alert("x:"+x);
+    var thisTd=blue.parentNode;
+    var dir=blue.getAttribute("value");
+    //alert("dir:"+dir);
+    
+    switch(command)
+    {
+        case "GO":Go(dir,x,y);break;
+        case "TUN LEF":tunLef(dir,x,y);break;
+        case "TUN RIG":tunRig(dir,x,y);break;
+        case "TUN BAC":tunBac(dir,x,y);break;
+        case "TRA LEF":traLef(dir,x,y);break;
+        case "TRA RIG":traRig(dir,x,y);break;
+        case "TRA TOP":traTop(dir,x,y);break;
+        case "TRA BOT":traBot(dir,x,y);break;
+        case "MOV LEF":movLef(dir,x,y);break;
+        case "MOV RIG":movRig(dir,x,y);break;
+        case "MOV TOP":movTop(dir,x,y);break;
+        case "MOV BOT":movBot(dir,x,y);break;
+        default:alert("指令无效！");break;
+    }
+}
+
+
+function movLef(dir,x,y)
+{
+    delBlock(x,y);
+    if(y>1)
+    {
+        y--;
+    }
+
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    dirLeft(thisTd);
+}
+
+function movRig(dir,x,y)
+{
+    delBlock(x,y);
+    if(y<size)
+    {
+        y++;
+    }
+
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    dirRight(thisTd);
+}
+
+function movTop(dir,x,y)
+{
+    delBlock(x,y);
+    if(x>1)
+    {
+        x--;
+    }
+
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    dirTop(thisTd);
+}
+
+function movBot(dir,x,y)
+{
+    delBlock(x,y);
+    if(x<size)
+    {
+        x++;
+    }
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    dirBottom(thisTd);
+}
+
+function traLef(dir,x,y)
+{
+    delBlock(x,y);
+    if(y>1)
+    {
+        y--;
+    }
+
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    switch(dir)
+    {
+        case "top":dirTop(thisTd);break;
+        case "bottom":dirBottom(thisTd);break;
+        case "left":dirLeft(thisTd);break;
+        case "right":dirRight(thisTd);break;
+        default:break;
+    }
+}
+
+function traRig(dir,x,y)
+{
+    delBlock(x,y);
+    if(y<size)
+    {
+        y++;
+    }
+
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    switch(dir)
+    {
+        case "top":dirTop(thisTd);break;
+        case "bottom":dirBottom(thisTd);break;
+        case "left":dirLeft(thisTd);break;
+        case "right":dirRight(thisTd);break;
+        default:break;
+    }
+}
+
+function traTop(dir,x,y)
+{
+    delBlock(x,y);
+    if(x>1)
+    {
+        x--;
+    }
+
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    switch(dir)
+    {
+        case "top":dirTop(thisTd);break;
+        case "bottom":dirBottom(thisTd);break;
+        case "left":dirLeft(thisTd);break;
+        case "right":dirRight(thisTd);break;
+        default:break;
+    }
+}
+
+function traBot(dir,x,y)
+{
+    delBlock(x,y);
+    if(x<size)
+    {
+        x++;
+    }
+
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    switch(dir)
+    {
+        case "top":dirTop(thisTd);break;
+        case "bottom":dirBottom(thisTd);break;
+        case "left":dirLeft(thisTd);break;
+        case "right":dirRight(thisTd);break;
+        default:break;
+    }
+}
+
+function tunBac(dir,x,y)
+{
+    delBlock(x,y);
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    switch(dir)
+    {
+        case "left":dirRight(thisTd);break;
+        case "top":dirBottom(thisTd);break;
+        case "bottom":dirTop(thisTd);break;
+        case "right":dirLeft(thisTd);break;
+        default:break;
+    }
+}
+
+function tunRig(dir,x,y)
+{
+    delBlock(x,y);
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    switch(dir)
+    {
+        case "left":dirTop(thisTd);break;
+        case "top":dirRight(thisTd);break;
+        case "bottom":dirLeft(thisTd);break;
+        case "right":dirBottom(thisTd);break;
+        default:break;
+    }
+}
+
+function tunLef(dir,x,y)
+{
+    delBlock(x,y);
+    var thisTd=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    switch(dir)
+    {
+        case "left":dirBottom(thisTd);break;
+        case "top":dirLeft(thisTd);break;
+        case "bottom":dirRight(thisTd);break;
+        case "right":dirTop(thisTd);break;
+        default:break;
+    }
+}
+ 
+
+function Go(dir,x,y)
+{
+    if(dir=="left")
+    {
+        if(y>1)
+        { 
+            delBlock(x,y);
+            y--;
+            var tdt=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+            dirLeft(tdt);
+        }         
+    }
+    else if(dir=="right")
+    {
+        if(y<size)
+        { 
+            delBlock(x,y);
+            y++;
+            var tdt=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+            dirRight(tdt);
+        }  
+    }
+    else if(dir=="top")
+    {
+        if(x>1)
+        { 
+            delBlock(x,y);
+            x--;
+            var tdt=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+            dirTop(tdt);
+        }  
+    }
+    else if(dir=="bottom")
+    {
+        if(x<size)
+        { 
+            delBlock(x,y);
+            x++;
+            var tdt=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+            dirBottom(tdt);
+        }  
+    }
+}
+
+
+function delBlock(x,y){
+    //alert("there");
+    var thisBlo=document.getElementsByTagName("tr")[x].children[y].getElementsByTagName("div")[0];
+    //alert(thisBlo);
+    while(thisBlo.hasChildNodes())
+    {
+        thisBlo.removeChild(thisBlo.firstChild);
+    }
+    //alert("there!!");
+}
+
+</script>
+</body>
+</html>

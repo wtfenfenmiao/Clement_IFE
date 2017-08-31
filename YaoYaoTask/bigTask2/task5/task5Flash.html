@@ -1,0 +1,613 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>task5Flash</title>
+<style type="text/css">
+*{
+    padding: 0;
+    margin: 0;
+}
+
+/*table>tr>td>div{
+    border:1px solid red;
+}*/
+.bor{                /*整个table和外边的距离*/
+    position: relative;
+    margin:30px;
+}
+
+.center{             /*编号居中*/
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+
+table{
+    border-collapse: collapse;
+    border-style:none;
+    /*border-right:1px solid black;
+    border-bottom: 1px solid black;*/
+    width: 100%;
+}
+
+tr{
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+}
+
+td{
+    box-sizing: border-box;
+    flex:1;
+    position: relative;
+    border:1px solid #D0D0D0;
+    /*margin-right: -2px;
+    margin-bottom: -2px;*/
+}
+
+.tran,.tran1,.tran2{
+    border:1px solid white;
+}
+
+.tran1{
+    border-bottom: 1px solid black;
+}
+
+.tran2{
+    border-right:1px solid black;
+}
+
+#qizi{
+    position: absolute;
+}
+
+input{
+    margin-top:10%;
+    margin-left: 10%;
+}
+
+</style>
+</head>
+<body>
+<div>
+    <ul>
+        <li>GO：向蓝色边所面向的方向前进一格（一格等同于正方形的边长）</li>
+        <li>TUN LEF：向左转（逆时针旋转90度）</li>
+        <li>TUN RIG：向右转（顺时针旋转90度）</li>
+        <li>TUN BAC：向右转（旋转180度）</li>
+        <li>TRA LEF：向屏幕的左侧移动一格，方向不变</li>
+        <li>TRA TOP：向屏幕的上面移动一格，方向不变</li>
+        <li>TRA RIG：向屏幕的右侧移动一格，方向不变</li>
+        <li>TRA BOT：向屏幕的下面移动一格，方向不变</li>
+        <li>MOV LEF：方向转向屏幕左侧，并向屏幕的左侧移动一格</li>
+        <li>MOV TOP：方向转向屏幕上面，向屏幕的上面移动一格</li>
+        <li>MOV RIG：方向转向屏幕右侧，向屏幕的右侧移动一格</li>
+        <li>MOV BOT：方向转向屏幕下面，向屏幕的下面移动一格</li>
+    </ul>
+</div>
+<div class="bor">
+<table border="1">
+<!--
+    <tr value="0" class="tran">
+        <td></td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+    </tr>
+    <tr value="1">
+        <td class="tran">1</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+    <tr value="2">
+        <td class="tran">2</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+    <tr value="3">
+        <td class="tran">3</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+    <tr value="4">
+        <td class="tran">4</td>
+        <td value="1"></td>
+        <td value="2"></td>
+        <td value="3"></td>
+        <td value="4"></td>
+    </tr>
+-->
+</table>
+<input type="text" id="command">
+<input type="submit" value="执行" id="execute" onclick="execute()">
+<div id="qizi">
+</div>
+</div>
+
+<script type="text/javascript" src="jQueryRotate.js"></script> 
+<script type="text/javascript">
+var timer=0;
+var timeDelay=100;
+var size=8;
+initBlock();
+var wid=document.getElementsByTagName("table")[0].clientWidth;
+var qiziWid=wid/(size+1);
+var speed=qiziWid/10;
+var speedAngle=9;
+//alert(wid);
+RandomBlock();
+function initBlock()
+{   
+    function setTd(td,i)
+    {
+        var div=document.createElement("div");
+        div.style.paddingTop="100%";            
+        //用这个搞出来小正方形。padding是根据父元素宽度来的。这个div只是为了小正方形，其他什么都不管。把它设置成relative，然后子元素absolute，子元素就不会影响这个正方形了
+        div.style.position="relative";
+        var inner=document.createElement("div");
+        inner.innerHTML=i;                         //inner为了能不影响正方形的加文本
+        inner.setAttribute("class","center");
+        div.appendChild(inner);
+        td.appendChild(div);
+    }
+
+    function setBlock(td,j)     //在中间的小格子里放正方形div用
+    {
+        var div=document.createElement("div");
+        div.style.paddingTop="100%";
+        div.style.position="relative";
+        td.appendChild(div);
+        td.setAttribute("value",j);
+    }
+
+    var table=document.getElementsByTagName("table")[0];   
+    var tr=new Array();
+    tr[0]=document.createElement("tr");
+    var tdNone=document.createElement("td");
+    tdNone.setAttribute("class","tran");
+    var divNone=document.createElement("div");
+    divNone.style.paddingTop="100%";
+    tdNone.appendChild(divNone);
+    tr[0].appendChild(tdNone);
+    
+    //这一堆都是生成初始的格子图的
+    for(var i=1;i<=size;i++)
+    {
+        tr[i]=document.createElement("tr");
+        var td1=document.createElement("td");
+        td1.setAttribute("class","tran1");
+        setTd(td1,i);
+        tr[0].appendChild(td1);
+        var td2=document.createElement("td");
+        td2.setAttribute("class","tran2");
+        setTd(td2,i);
+        tr[i].appendChild(td2);
+        tr[i].setAttribute("value",i);
+
+        for(var j=1;j<=size;j++)
+        {
+            var td=document.createElement("td");
+            setBlock(td,j);
+            if(i==size)
+            {
+                td.style.borderBottom="1px solid black";
+            }
+            if(j==size)
+            {
+                td.style.borderRight="1px solid black";
+            }
+            //td.style.width="(1/11)%";
+            tr[i].appendChild(td);
+        }
+    }
+
+    table.appendChild(tr[0]);
+    //alert("this");
+    for(var i=1;i<=size;i++)
+    {     
+        table.appendChild(tr[i]);        
+    }
+}
+
+//随机初始化红蓝小方块的位置和方向
+function RandomBlock(){
+    var x=Math.ceil(Math.random()*size);
+    var y=Math.ceil(Math.random()*size);
+    var dir=Math.floor(Math.random()*4);
+    var qizi=document.getElementById("qizi");
+    //value值是旋转用的，这个rotate是根据最开始的旋转的，所以要记个数
+    qizi.setAttribute("value",0);
+    qizi.setAttribute("dir",dir);         //初始的方向值，在后面旋转的过程不变，最后的方向用这个dir和value算
+    //alert("x:"+x);
+    //alert("y:"+y);
+    qizi.style.top=x*qiziWid;
+    qizi.style.left=y*qiziWid;
+    qizi.style.width=qiziWid;
+    qizi.style.height=qiziWid;
+    switch(dir)
+    {
+        case 0:dirTop(qizi);break;
+        case 1:dirRight(qizi);break;
+        case 2:dirBottom(qizi);break;
+        case 3:dirLeft(qizi);break;
+        default:break;
+    }
+}
+
+//在给定位置生成给定方向的红蓝小方格
+function dirTop(qizi){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    divBlue.style.width="100%";
+    divBlue.style.height="25%";
+    divBlue.style.background="blue";
+    //divBlue.style.position="absolute";
+    //divBlue.style.top="1";
+    divRed.style.width="100%";
+    divRed.style.height="75%";
+    divRed.style.background="red";
+    //divRed.style.position="absolute";
+    //divRed.style.bottom="-1";
+    qizi.appendChild(divBlue);
+    qizi.appendChild(divRed);
+}
+
+function dirBottom(qizi){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    //divBlue.setAttribute("id","blue");
+    //divBlue.setAttribute("value","bottom");
+    divBlue.style.width="100%";
+    divBlue.style.height="25%";
+    divBlue.style.background="blue";
+    //divBlue.style.position="absolute";
+    //divBlue.style.bottom="-1";
+    divRed.style.width="100%";
+    divRed.style.height="75%";
+    divRed.style.background="red";
+    //divRed.style.position="absolute";
+    //divRed.style.top="1";
+    qizi.appendChild(divRed);
+    qizi.appendChild(divBlue);
+    
+}
+
+function dirRight(qizi){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    //divBlue.setAttribute("id","blue");
+    //divBlue.setAttribute("value","right");
+    divBlue.style.width="25%";
+    divBlue.style.height="100%";
+    divBlue.style.background="blue";
+    divBlue.style.float="left";
+    //divBlue.style.position="absolute";
+    //divBlue.style.right="0";
+    //divBlue.style.top="1";
+    divRed.style.width="75%";
+    divRed.style.height="100%";
+    divRed.style.background="red";
+    divRed.style.float="left";
+    //divRed.style.position="absolute";
+    //divRed.style.left="0";
+    //divRed.style.top="1";
+    qizi.appendChild(divRed);
+    qizi.appendChild(divBlue);   
+}
+
+function dirLeft(qizi){
+    var divBlue=document.createElement("div");
+    var divRed=document.createElement("div");
+    //divBlue.setAttribute("id","blue");
+    //divBlue.setAttribute("value","left");
+    divBlue.style.width="25%";
+    divBlue.style.height="100%";
+    divBlue.style.background="blue";
+    divBlue.style.float="left";
+    //divBlue.style.position="absolute";
+    //divBlue.style.left="0";
+    //divBlue.style.top="1";
+    divRed.style.width="75%";
+    divRed.style.height="100%";
+    divRed.style.background="red";
+    divRed.style.float="left";
+    //divRed.style.position="absolute";
+    //divRed.style.right="0";
+    //divRed.style.top="1";
+    qizi.appendChild(divBlue);
+    qizi.appendChild(divRed);
+}
+
+//点击执行
+function execute()
+{
+    //获取文字内容，当前红蓝方块的位置方向信息
+    var command=document.getElementById("command").value;
+    var qizi=document.getElementById("qizi");
+    disableButton();
+    switch(command)
+    {
+        case "GO":Go(qizi);break;
+        case "TUN LEF":tunLef(qizi);break;
+        case "TUN RIG":tunRig(qizi);break;
+        case "TUN BAC":tunBac(qizi);break;
+        case "TRA LEF":traLef(qizi);break;
+        case "TRA RIG":traRig(qizi);break;
+        case "TRA TOP":traTop(qizi);break;
+        case "TRA BOT":traBot(qizi);break;
+        case "MOV LEF":movLef(qizi);break;
+        case "MOV RIG":movRig(qizi);break;
+        case "MOV TOP":movTop(qizi);break;
+        case "MOV BOT":movBot(qizi);break;
+        default:alert("指令无效！");break;
+    }
+    setTimeout(function(){enableButton()},timer);
+}
+
+function disableButton()
+{
+    document.getElementById("execute").disabled=true;
+}
+
+function enableButton()
+{
+    document.getElementById("execute").disabled=false;
+}
+
+function tunRig(qizi)
+{
+    //value值是旋转用的，这个rotate是根据最开始的旋转的，所以要记个数
+    timer=0;
+    var i=qizi.getAttribute("value");
+    var angleBefore=i*90;
+    i=(parseInt(i)+1) % 4;
+    qizi.setAttribute("value",i);
+    for(var j=1;j<=10;j++)
+    {
+        setRotate(j);
+    }
+    function setRotate(j)
+    {
+        setTimeout(function(){
+            qizi.style.transform="rotate(" + (angleBefore+speedAngle*j) + "deg)";
+            //alert(j);
+        },timer+=timeDelay);
+    }
+    
+}
+
+function tunLef(qizi)
+{
+    timer=0;
+    var i=qizi.getAttribute("value");
+    var angleBefore=i*90;
+    i=(parseInt(i)+4-1) % 4;
+    qizi.setAttribute("value",i);
+    for(var j=1;j<=10;j++)
+    {
+        setRotate(j);
+    }
+    function setRotate(j)
+    {
+        setTimeout(function(){
+            qizi.style.transform="rotate(" + (angleBefore-speedAngle*j) + "deg)";
+            //alert(j);
+        },timer+=timeDelay);
+    }
+}
+
+function tunBac(qizi)
+{
+    timer=0;
+    var i=qizi.getAttribute("value");
+    var angleBefore=i*90;
+    i=(parseInt(i)+2) % 4;
+    qizi.setAttribute("value",i);
+    for(var j=1;j<=20;j++)
+    {
+        setRotate(j);
+    }
+    function setRotate(j)
+    {
+        setTimeout(function(){
+            qizi.style.transform="rotate(" + (angleBefore+speedAngle*j) + "deg)";
+            //alert(j);
+        },timer+=timeDelay);
+    }
+}
+
+function traLef(qizi)
+{
+    timer=0;
+    var leftPre=parseFloat(qizi.style.left);
+    if(Math.round(parseFloat(leftPre)/qiziWid)>1)
+    {
+        for(var i=1;i<=10;i++)
+        {
+            setLeft(i);
+        }
+        function setLeft(i)
+        {
+            setTimeout(function(){qizi.style.left=leftPre-speed*i;},timer+=timeDelay);
+        }         
+    }       
+}
+
+function traRig(qizi)
+{
+    timer=0;
+    var leftPre=parseFloat(qizi.style.left);
+    //alert(leftPre);
+    if(Math.round(parseFloat(leftPre)/qiziWid)<size)
+    {
+        for(var i=1;i<=10;i++)
+        {
+            setRight(i);
+        }
+        function setRight(i)
+        {
+            setTimeout(function(){qizi.style.left=leftPre+speed*i;},timer+=timeDelay);
+        }         
+    }
+}
+
+function traTop(qizi)
+{
+    timer=0;
+    var topPre=parseFloat(qizi.style.top);
+    if(Math.round(parseFloat(topPre)/qiziWid)>1)
+    {
+        for(var i=1;i<=10;i++)
+        {
+            setTop(i);
+        }
+        function setTop(i)
+        {
+            setTimeout(function(){qizi.style.top=topPre-speed*i;},timer+=timeDelay);
+        }         
+    }    
+}
+
+function traBot(qizi)
+{
+    timer=0;
+    var topPre=parseFloat(qizi.style.top);
+    //alert(leftPre);
+    if(Math.round(parseFloat(topPre)/qiziWid)<size)
+    {
+        for(var i=1;i<=10;i++)
+        {
+            setBottom(i);
+        }
+        function setBottom(i)
+        {
+            setTimeout(function(){qizi.style.top=topPre+speed*i;},timer+=timeDelay);
+        }         
+    }
+}
+
+
+function movLef(qizi)
+{
+    timer=0;
+    var i=qizi.getAttribute("value");
+    var angleBefore=i*90;
+    var dir=qizi.getAttribute("dir");
+    var times=(3-(parseInt(i)+parseInt(dir))%4)*10;
+    i=3-parseInt(dir);
+    qizi.setAttribute("value",i);
+    for(var j=1;j<=times;j++)
+    {
+        setRotate(j);
+    }
+    function setRotate(j)
+    {
+        setTimeout(function(){
+            qizi.style.transform="rotate(" + (angleBefore+speedAngle*j) + "deg)";
+            //alert(j);
+        },timer+=timeDelay);
+    }
+    setTimeout(function(){traLef(qizi)},timer);
+}
+
+function movRig(qizi)
+{
+    timer=0;
+    var i=qizi.getAttribute("value");
+    var angleBefore=i*90;
+    var dir=qizi.getAttribute("dir");
+    var times=(4+1-(parseInt(i)+parseInt(dir))%4)%4*10;
+    i=(4+1-parseInt(dir))%4;
+    qizi.setAttribute("value",i);
+    for(var j=1;j<=times;j++)
+    {
+        setRotate(j);
+    }
+    function setRotate(j)
+    {
+        setTimeout(function(){
+            qizi.style.transform="rotate(" + (angleBefore+speedAngle*j) + "deg)";
+            //alert(j);
+        },timer+=timeDelay);
+    }
+    setTimeout(function(){traRig(qizi)},timer);
+}
+
+function movTop(qizi)
+{
+    timer=0;
+    var i=qizi.getAttribute("value");
+    var angleBefore=i*90;
+    var dir=qizi.getAttribute("dir");
+    var times=(4+0-(parseInt(i)+parseInt(dir))%4)%4*10;
+    i=(4+0-parseInt(dir))%4;
+    qizi.setAttribute("value",i);
+    for(var j=1;j<=times;j++)
+    {
+        setRotate(j);
+    }
+    function setRotate(j)
+    {
+        setTimeout(function(){
+            qizi.style.transform="rotate(" + (angleBefore+speedAngle*j) + "deg)";
+            //alert(j);
+        },timer+=timeDelay);
+    }
+    setTimeout(function(){traTop(qizi)},timer);
+}
+
+ 
+function movBot(qizi)
+{
+    timer=0;
+    var i=qizi.getAttribute("value");
+    var angleBefore=i*90;
+    var dir=qizi.getAttribute("dir");
+    var times=(4+2-(parseInt(i)+parseInt(dir))%4)%4*10;
+    i=(4+2-parseInt(dir))%4;
+    qizi.setAttribute("value",i);
+    for(var j=1;j<=times;j++)
+    {
+        setRotate(j);
+    }
+    function setRotate(j)
+    {
+        setTimeout(function(){
+            qizi.style.transform="rotate(" + (angleBefore+speedAngle*j) + "deg)";
+            //alert(j);
+        },timer+=timeDelay);
+    }
+    setTimeout(function(){traBot(qizi)},timer);
+}
+function Go(qizi)
+{
+    var dir=qizi.getAttribute("dir");//这里的dir是初始的方向值
+    //alert(dir);
+    var value=qizi.getAttribute("value");
+    //alert(value);
+    dir=(parseInt(dir)+parseInt(value))%4;
+    switch(dir)
+    {
+        case 0:traTop(qizi);break;
+        case 1:traRig(qizi);break;
+        case 2:traBot(qizi);break;
+        case 3:traLef(qizi);break;
+        default:break;
+    }
+}
+
+
+
+</script>
+</body>
+</html>
