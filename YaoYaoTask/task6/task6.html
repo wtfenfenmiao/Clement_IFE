@@ -1,0 +1,979 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Clement_task_6</title>
+<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">     <!--加下边小图标用的，这个font-awesome是好东西啊-->
+<!--<link href="../static/Advertiser_set.css" rel="stylesheet" type="text/css" />-->
+<!--
+[建议] 同一 rule set 下的属性在书写时，应按功能进行分组，并以 Formatting Model（布局方式、位置） > Box Model（尺寸） > Typographic（文本相关） > Visual（视觉效果） 的顺序书写，以提高代码的可读性。
+解释：
+Formatting Model 相关属性包括：position / top / right / bottom / left / float / display / overflow 等
+Box Model 相关属性包括：border / margin / padding / width / height 等
+Typographic 相关属性包括：font / line-height / text-align / word-wrap 等
+Visual 相关属性包括：background / color / transition / list-style 等-->
+<style type="text/css">
+
+/*div,垂直的直接排就行，不需要用position，水平可以用float*/
+/*如果发现了什么你想不通的不得了的事情，就加边框看，加个border好多时候豁然开朗*/
+/*盒模型由外往里，margin,border,padding,content,width和height都是针对content的*/
+body{
+	position: absolute;
+    top:0px;
+    left:0px;
+    margin:0px;
+    padding: 0px;
+    width:1348px;
+
+}
+.topbar{
+    height: 35px;
+}
+
+.topbar  img{
+    position:absolute;
+    left:50px;
+    margin:0px;
+    padding: 0px;
+	width:50px;
+	height:50px;
+}
+
+.topbar  p{
+	position:absolute;
+	margin-top: 12px;
+	left:100px;
+	font-size: 20px;
+	font-family: 微软雅黑;
+	font-weight: bold;
+}
+
+.topbar li{
+	float:right;
+    margin-top: 15px;
+	font-weight: bold;
+	list-style-type: none;
+	
+}
+
+.topbar .login{
+	margin-left:30px;
+	list-style-image: url('login.gif');
+	color:red;
+}
+
+.topbar span{
+	margin-right: 30px;
+	padding-bottom:10px;
+	
+}
+
+.topbar .span1{
+	margin-right: 60px;
+	padding-right:0px;
+	padding-left:0px;
+}
+
+.topbar .span2{
+	padding-right:15px;
+	padding-left:15px;
+}
+
+.topbar a:hover>span{                      /**/
+	color:red;
+	border-bottom: 5px solid red;
+}
+
+.startFeel{
+	margin:0px;
+	height:843px;
+	background-image:url(back1.jpg);
+
+}
+
+.startFeel p{
+    position:absolute;
+    left:150px;
+    top:250px;
+    color:white;
+}
+
+.startFeel .timeOf{
+	font-size:60px; 
+}
+
+.startFeel .enjoy{
+	font-size: 25px;
+}
+
+.startFeel button{
+	position:absolute;
+	top:480px;
+	left:150px;
+	width:300px;
+	height:50px;
+	background:#EA0000;
+	color:white;
+	border-style:none;
+	font-size: 25px;
+}
+
+.logo4{
+	height: 250px;
+}
+
+.logo4_set{
+	float:left;
+	padding: 16px;	
+	width:300px;
+}
+
+.logo4_set img{                                /*不知道图片大小的居中*/
+    position: relative;
+    left:50%;
+    transform: translate(-50%,0);
+	/*margin-left:130px;*/
+	margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.logo4_set p{
+	margin-left: 45px;
+    width:200px;
+    text-align: center;
+    
+}
+
+.logo4_set hr{
+    position: relative;
+    right:-165px;
+    top:-60px;
+	height: 50px;
+	width:1px;
+	background:gray;
+}
+
+.grayBar{
+	margin:0px;
+	padding: 0px;
+	height: 330px;
+	background: #E0E0E0;
+}
+/*关于absolute  http://www.jianshu.com/p/a3da5e27d22b  看这个*/
+.grayBar img{                         /*知道图片大小的居中，img是内联元素*/
+    /*display: block;*/
+    position: absolute;             /*上一层已经定位了（没有说就是static），absolute是上一个static定位的东西的子元素，所以跑不出这个框框，如果上一层没有static和relative（别的不知道啥样，这两个是可以限制absolute的），absolute就会相对body定位（比如上一层也是absolute，那这个用了absolute就不受上一层控制了）*/
+    left:50%;
+    margin-left:-50px;
+    margin-top: 70px;
+	height:100px;
+	width: 100px;
+	vertical-align: middle;
+}
+
+.grayBar p{
+	position: absolute;
+	left:50%;
+	transform: translate(-50%,0);
+	margin-top: 220px;
+	font-size: 40px;
+	color:#8E8E8E;
+}
+
+.findMessage{
+	position: relative;              /*加个relative，是为了约束后面p的absolute*/
+	margin:0px;
+	padding: 0px;
+	height:460px;
+	background-image: url('back2.jpg');
+	border-top:1px solid white;
+
+}
+
+.findMessage p{
+	position: absolute;
+	top:100px;
+	left:50%;
+	transform: translate(-50%,0);
+    text-align: center;
+    line-height: 65px;
+    color:white;
+	
+}
+
+.findMessage .findSpan1{
+	font-size:30px;
+}
+.findMessage .findSpan2{
+	font-size:15px;
+}
+
+.findMessage hr{
+	position: absolute;
+	left:50%;
+	top:160px;
+	transform: translate(-50%,0);
+	width:40px;
+	height:3px;
+	background:white;
+	border-style: none;
+}
+
+.findMessage select{
+	float:left;
+	margin-left: 200px;
+	margin-right: -150px;
+	margin-top: 300px;
+	padding-left: 10px;
+	width: 200px;
+	height:30px;
+	color:#8E8E8E;
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	background:url('xiala1.jpg')  no-repeat 95% / 10% white;   /*这个好，百分比定位背景图片位置*/
+}
+
+.displayNone{
+	display: none;
+}
+
+option{                         /*啊option样式是不能改的，安全问题，或者用javascript，这里就先不折腾了*/
+	background:#E0E0E0;
+	color:black;
+}
+
+
+.sub{
+	float:left;
+	margin-left: 200px;
+	margin-right: -150px;
+	margin-top: 300px;
+	border-style: none;
+	width: 200px;
+	height: 30px;
+	background:#EA0000;
+    text-align: center;
+	color:white;
+    letter-spacing: 10px;
+}
+
+
+.activity{
+	position: relative;
+	height:600px;
+	background: #ECFFFF;
+}
+
+.activity .imgOut{
+    float:left;
+	margin-top:70px;
+	margin-left: 50px;
+	width:270px;
+	height:500px;
+}
+
+.activity .imgIn{
+	margin:0px;
+	width:270px;
+	height:400px;
+	background: white;
+}
+
+.activity .speBorder{
+	margin-top: 55px;
+	width:270px;
+	height:400px;
+	background: white;
+}
+
+.activity img{
+	margin:10px;
+	width:250px;
+	height:380px;
+}
+
+.activity .forP{
+	position: relative;
+}
+.activity p{
+    position: absolute;  
+    left:50%; 
+    margin:0px;
+    transform: translate(-50%,0);
+    text-align: center;
+}
+
+.activity .fi{
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 30px;
+}
+.activity .speFi{
+	margin-left: -150px;
+    margin-right: -180px;
+	font-size: 25px;
+	letter-spacing: 40px;
+}
+
+.activity .se{
+	font-size: 10px;	
+}
+
+.detail{
+	height:427px;
+}
+
+.detail_left{
+	position:relative;
+	height:427px;
+	width:900px;
+	background-image: url('back3.jpg');
+	
+}
+
+.detail_right{
+	position:relative;
+	left:900px;
+	top:-430px;
+	height:427px;
+	width:448px;
+}
+
+.detail_left p{
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+	color:white;
+	text-align: center;
+}
+
+.detail_left_1{
+	display: block;
+	margin-bottom: -55px;
+	font-size: 40px;
+
+}
+.detail_left_2{
+	display: block;
+	margin-bottom: -40px;
+	font-size: 120px;
+}
+.detail_left_3{
+	line-height: 25px;
+}
+
+.detail_right p{
+	position:absolute;
+	left:50%;
+	top:100px;
+	transform: translate(-50%,0);
+	width: 300px;
+}
+
+.detail_right_neworld{
+	display: block;
+    font-size:18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.detail_right_01{
+	color:red;
+
+}
+
+.detail_right_core{
+	display: block;
+	font-size: 10px;
+	color:#8E8E8E;
+	text-indent: 24px;
+    line-height: 30px;
+}
+
+.detail_right input{
+	position: absolute;
+	left:50%;
+	top:280px;
+	transform: translate(-50%,0);
+	width: 90px;
+	height:30px;
+	background-color: transparent;
+	border: 1px solid #EA0000;
+	color:#EA0000;
+}
+
+.trans{
+	position: absolute;
+	left:50%;
+	top:320px;
+	transform: translate(-50%,0);
+}
+.trans img{
+	width:10px;
+	height:10px;
+}
+
+.sanlan{
+	height:527px;
+	
+}
+
+.sanlan>div{                 /*只作用于子元素，不能再往下了，所以不会影响到三角形*/
+	float:left;
+	width:449px;
+	height:527px;
+	
+}
+
+.sanlan_left{
+	position: relative;
+    background-color:#EA0000;
+}
+
+
+.sanlan_right{
+	position: relative;
+	background: url('sanlan1.jpg');
+}
+
+.sanlan_middle{
+	position: relative;
+}
+
+.sanlan p{
+	position: absolute;
+    left:50%;
+    transform: translate(-50%,0);
+    top:150px;
+    text-align: center;	
+}
+
+.sanlan hr{
+	position: absolute;
+	left:50%;
+    transform: translate(-50%,0);
+    top:220px;
+	width:30px;
+	height:2px;
+	border-style: none;
+	background-color: white;
+}
+
+.sanlan input{
+	position: absolute;
+	left:50%;
+    transform: translate(-50%,0);
+    top:250px;
+	width:130px;
+	height:30px;
+}
+
+.sanlan_left p{
+	color:white;
+}
+
+.sanlan_middle p{
+	color:black;
+}
+
+.sanlan_left hr{
+	background:white;
+}
+
+.sanlan_middle hr{
+	background:black;
+}
+
+.sanlan_left input{
+	border:1px solid white;
+	background:#EA0000;
+	color:white;
+}
+
+.sanlan_middle input{
+	border:1px solid #EA0000;
+	background:white;
+	color:#EA0000;
+}
+
+.retangle{
+	position: absolute;
+	top:50%;
+	transform: translate(0,-50%);
+	width:0px;
+	height:0px;
+	border-top: 15px solid transparent;       /*把transparent染上颜色，就知道这个技巧啥意思了，就是一个div，芯弄没，把border弄得很粗很粗，就是四个小三角*/
+	border-left:25px solid white;
+	border-right:25px solid transparent; 
+	border-bottom:15px solid transparent; 
+}
+
+
+.biaodan{
+	height:700px;
+}
+
+.become{
+	position: relative;
+	height:200px;
+}
+
+.shuoming{
+	float: left;
+	height:500px;
+	width: 500px;
+}
+
+.realForm{
+	float:left;
+	padding-top:50px;
+	padding-left:80px;
+	height:450px;
+	width:700px;
+}
+
+.become p{
+	position: absolute;
+	left:50%;
+	top:20px;
+	transform: translate(-50%,0);	
+    width:490px;
+    text-align: center;
+}
+
+.become .t_1{
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 60px;
+}
+
+.become .t_2{
+	font-size: 10px;
+	color: #8E8E8E;
+	line-height: 15px;
+}
+
+.become hr{
+	position: absolute;
+	left:50%;
+	top:75px;
+	transform: translate(-50%,0);	
+	width:30px;
+	height:2px;
+	border-style: none;
+	background: #EA0000;
+}
+
+.shuoming p{
+	margin-left: 100px;
+	margin-right:50px;
+	margin-top: 30px;
+	/*border:1px solid red;*/
+}
+
+.shuoming .t_1{
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 60px;
+}
+
+.shuoming .t_2{
+	font-size: 10px;
+	color: #8E8E8E;
+	line-height: 20px;
+}
+
+.shuoming img{
+	float: right;
+	margin-right: 50px;
+	margin-top: -15px;
+	/*border:1px solid red;*/
+}
+
+.realForm_input{
+	float:left;
+	margin-bottom:20px;
+	margin-right: 20px;
+	padding-left:10px;
+	width:300px;
+	height:35px;
+	background: #E0E0E0;
+	border-style: none;
+	font:10px "Microsoft YaHei";
+}
+
+.realForm textarea{
+	float:left;
+	width:620px;
+	margin-bottom: 20px;
+	padding-left:10px;
+	padding-top: 10px;
+	background: #E0E0E0;
+	border-style: none;
+	font:10px "Microsoft YaHei";
+}
+
+.realForm_submit{
+	width:620px;
+	height:35px;
+	background: #E0E0E0;
+	border-style: none;
+	font-weight: bold;
+}
+
+.contact{
+	position: relative;
+	height:470px;
+	background-color: #272727;
+}
+
+.contact p{
+	position: absolute;
+	left:50%;
+	top:75px;
+	transform: translate(-50%,0);
+	width:590px;
+	color:white;
+	text-align: center;
+}
+
+.contact .t_1{
+	font-size: 30px;
+	line-height: 50px;
+}
+
+.contact .t_2{
+	font-size: 15px;
+	line-height: 23px;
+}
+
+.contact .text{
+    position: absolute;
+	left:50%;
+	top:230px;
+	transform: translate(-60%,0);
+	width:500px;
+	height:50px;
+	font-size: 20px;
+}
+.contact .submit{
+    position: absolute;
+	right:376px;
+	top:230px;
+    padding-left: 20px;
+	border-style: none;
+	width:100px;
+	height:50px;
+	background: #6C6C6C;
+	color:#D0D0D0;
+	font-size: 20px;
+	letter-spacing: 20px;
+
+}
+
+.contact .logo{
+	position: absolute;
+	left:50%;
+	top:300px;
+	transform: translate(-50%,0);
+	padding-top: 20px;
+}
+
+.contact i{
+	margin-right: 20px;
+	color:white;
+}
+
+
+.bottomBar{
+	position: relative;
+	height:90px;
+	background: #000;
+	border:1px solid black;
+}
+
+.bottomBar p{
+	color:white;
+	margin-top: 50px;
+	margin-left:100px;
+}
+
+.bottomBar .t_1{
+	margin-right: 1000px;
+}
+
+
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <img src="logo.jpg"/>
+    <p>新世界</p>   
+    <ul>
+    <li class="login"><a><span class="span1">登录</span></a></li>
+    <li><a><span>关于我们</span></a></li>
+    <li><a><span>爱心社区</span></a></li>
+    <li><a><span>项目介绍</span></a></li>
+    <li><a><span>最新活动</span></a></li>
+    <li><a><span class="span2">首页</span></a></li>
+    </ul>	
+</div>
+
+<div class="startFeel">
+     <p><span class="timeOf">Time of new life</span></br>
+     <span class="enjoy">新时代，年轻的人们让我们一起</br>体验新生活，享受新生活</span>
+     </p>
+     <form>
+         <button type="submit" value="Submit">开始体验</button>
+     </form>
+</div>
+
+<div class="logo4">
+    <div class="logo4_set">
+        <img src="logo_1.PNG"/>
+        <p>打造全新世界观，让你更爱你的生活</p>
+        <hr/>
+    </div>
+    <div class="logo4_set">
+        <img src="logo_2.PNG"/>
+        <p>丰富多彩的公益活动，发挥新世界的主人公意识</p>
+        <hr/>
+    </div>
+    <div class="logo4_set">
+        <img src="logo_3.PNG"/>
+        <p>时尚的新理念，超前体验未知的生活</p>
+        <hr/>
+    </div>
+    <div class="logo4_set">
+        <img src="logo_4.PNG"/>
+        <p>完善的培养机制，培养你全新的世界观</p>       
+    </div>
+</div>
+
+<div class="grayBar">
+    <img src="logo.jpg"/>
+    <p>关于新世界，你不知道的还有什么？</p>
+</div>
+
+<div class="findMessage">
+     <p><span class="findSpan1">查找新世界城市活动信息</span></br>
+     <span class="findSpan2">每个城市有不同的活动信息，请自主查询您所需要了解的城市</span></p>
+     <hr/>
+     <form>
+         <select name="Country">
+             <option value="China">中国</option>
+             <option value="USA">America</option>
+         </select>
+         <select name="Province">
+             <!--disabled="true"，则这个选项不会被选-->
+             <option value="" selected="true" class="displayNone">省份</option>
+             <option value="Beijing">北京</option>
+             <option value="Liaoning">辽宁</option>
+             <option value="Guangdong">广东</option>
+         </select>
+         <select name="City">
+             <option value="" selected="true" class="displayNone">城市</option>
+             <option value="Beijing">北京</option>
+             <option value="Shenyang">沈阳</option>
+             <option value="Guangzhou">广州</option>
+         </select>
+         <input class="sub" type="submit" value="搜索">        
+     </form>
+</div>
+
+<div class="activity">
+    <div class="imgOut">
+        <div class="imgIn">
+            <img src="ac1.jpg"/>
+        </div>
+        <div class="forP">
+            <p><span class="fi">北京活动</span></br><span class="se">新社区大联盟</span></p>
+        </div>
+    </div>
+    <div class="imgOut">
+        <div class="forP">
+            <p><span class="speFi">上海活动</span></br><span class="se">夜上海新景观探索</span></p>
+        </div>
+        <div class="speBorder">
+            <img src="ac2.jpg"/>
+        </div>
+        
+    </div>
+    <div class="imgOut">
+        <div class="imgIn">
+            <img src="ac3.jpg"/>
+        </div>
+        <div class="forP">
+            <p><span class="fi">深圳活动</span></br><span class="se">全新海岸线观点站</span></p>
+        </div>
+    </div>
+    <div class="imgOut">
+        <div class="imgIn">
+            <img src="ac4.jpg"/>
+        </div>
+        <div class="forP">
+            <p><span class="fi">香港活动</span></br><span class="se">奢侈消费大派送</span></p>
+        </div>
+    </div>
+</div>
+
+<div class="detail">
+    <div class="detail_left">
+        <p>
+            <span class="detail_left_1">新世界</span></br>
+            <span class="detail_left_2">TIME</span></br>
+            <span class="detail_left_3">@新世界-北京</br>2016.04.01</span></br>
+        </p>
+    </div>
+    <div class="detail_right">
+        <p>
+        <span class="detail_right_neworld">新世界/<span class="detail_right_01">01</span></span>
+        </br>
+        <span class="detail_right_core">新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是个新世界是</span>
+        </p>
+        <form>
+            <input type="submit" value="更多详情">
+        </form>
+        <div class="trans">
+            <img src="灰圆.jpg"/>
+            <img src="空心圆.jpg"/>
+            <img src="空心圆.jpg"/>    <!--想点击有效果就用javascript-->
+        </div>
+    </div>
+</div>
+
+<div class="sanlan">
+    <div class="sanlan_left">
+    	<p>新时代</br>关于爱生活的我们</p>
+    	<hr/>
+    	<input class="sanlan_left_submit" type="submit" value="查看更多"/>
+    </div>
+    <div class="sanlan_middle">
+    	<p>新时代</br>关于爱生活的我们</p>
+    	<hr/>
+    	<input class="sanlan_middle_submit" type="submit" value="查看更多"/>
+    </div>
+    <div class="sanlan_right">
+        <div class="retangle">
+        </div>
+    </div>
+</div>
+
+<div class="biaodan">
+    <div class="become">
+        <p>
+            <tran class="t_1">成为我们的志愿者</tran></br>
+            <tran class="t_2">新世界的大家庭需要每一个爱生活人的加入，如果你够年轻，有梦想，有激情那就不要犹豫快来加入我们，成为改变所有人生活的人</tran>
+        </p>
+        <hr/>
+    </div>
+    <div class="shuoming">
+        <p>
+            <tran class="t_1">新世界志愿者协议</tran></br>
+            <tran class="t_2">新世界的大家庭需要每啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</tran>
+        </p>
+        <img src="more.jpg"/>
+        <p>
+            <tran class="t_1">新世界志愿者权利</tran></br>
+            <tran class="t_2">新世界的大家庭需要每不不不不不不不不不不不不不不不不不不不不不不不不不不不不不不不不</tran>
+        </p>
+        <img src="more.jpg"/>
+        <p>
+            <tran class="t_1">更多条款</tran>
+        </p>
+        <img src="more.jpg"/>
+    </div>
+    <div class="realForm">
+        <form>
+            <input class ="realForm_input" type="text" value="姓名：">
+            <input class ="realForm_input" type="text" value="年龄：">
+            <input class ="realForm_input" type="text" value="联系方式：">
+            <input class ="realForm_input" type="text" value="联系地址：">
+            <textarea rows="9" cols="30">请简单描述您梦想的生活：</textarea>
+            <input class ="realForm_submit" type="submit" value="提交申请">
+        </form>
+    </div>
+</div>
+
+<div class="contact">
+    <p>
+    	<tran class="t_1">联系我们</tran></br>
+    	<tran class="t_2">为了更好的获取我们最新的产品资讯，您可以留下您的电子邮箱快速订阅我们的产品资讯也可以通过以下任何方式关注我们动态</tran>
+    </p>
+    <form>
+        <input class="text" type="text" placeholder="wtbupt@outlook.com">
+        <input class="submit" type="submit" value="提交">
+    </form>
+    <div class="logo">
+        <i class="fa fa-qq fa-2x"></i>
+        <i class="fa fa-twitter fa-2x"></i>
+        <i class="fa fa-weibo fa-2x"></i>
+        <i class="fa fa-github fa-2x"></i>
+    </div>
+</div>
+
+    <div class="bottomBar">
+        <p><span class="t_1">@2016新世界</span><span>Back to top</span></p>
+    </div>
+<!--这里以下才是task6-->
+<div id="back">
+</div>
+<div id="fuChu" tabindex="1" onblur="hidFuChu()">    <!--元素要想focus或者blur，其tabindex的值必须要有，所以赋个值就行了。同时注意，onblur的前提，是必须得onfocus一下-->
+</div>
+<button id="change" onclick="change()">切换</button>
+<script type="text/javascript">
+fuChu();
+function fuChu()
+{
+	var back=document.getElementById("back");
+	back.style.position="fixed";
+	back.style.top="0";
+	back.style.left="0";
+	back.style.width="100%";
+	back.style.height="100%";
+	back.style.backgroundColor="hsla(0,0%,0%,0.3)"; 
+    var fuChu=document.getElementById("fuChu");
+    fuChu.focus();       //失焦必须先聚焦才行
+    fuChu.style.position="fixed";
+    fuChu.style.top="50%";
+    fuChu.style.left="50%";
+    fuChu.style.transform="translate(-50%,-50%)";
+    fuChu.style.width="50%";
+    fuChu.style.height="50%";
+    fuChu.style.background="white";
+    fuChu.style.border="1px solid gray";
+    var change=document.getElementById("change");
+    change.style.position="fixed";
+    change.style.top="0";
+    change.style.right="0";
+}
+
+function change()
+{
+	var state=document.getElementById("fuChu").style.visibility;
+	if(state=="hidden")
+	{
+		document.getElementById("fuChu").style.visibility="visible";
+	    document.getElementById("back").style.visibility="visible";
+	}
+	else
+	{
+		document.getElementById("fuChu").style.visibility="hidden";
+	    document.getElementById("back").style.visibility="hidden";
+	}
+}
+
+function hidFuChu()
+{
+	document.getElementById("fuChu").style.visibility="hidden";
+	document.getElementById("back").style.visibility="hidden";
+}
+</script>
+</body>
+</html>

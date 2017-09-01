@@ -1,0 +1,32 @@
+<div id="back">
+</div>
+<div id="fuChu" tabindex="1" onblur="hidFuChu()">    <!--元素要想focus或者blur，其tabindex的值必须要有，所以赋个值就行了-->
+</div>
+<script type="text/javascript">
+fuChu();
+function fuChu()
+{
+	var back=document.getElementById("back");
+	back.style.position="fixed";
+	back.style.top="0";
+	back.style.left="0";
+	back.style.width="100%";
+	back.style.height="100%";
+	back.style.backgroundColor="hsla(0,0%,0%,0.3)"; 
+    var fuChu=document.getElementById("fuChu");
+    fuChu.style.position="fixed";
+    fuChu.style.top="50%";
+    fuChu.style.left="50%";
+    fuChu.style.transform="translate(-50%,-50%)";
+    fuChu.style.width="50%";
+    fuChu.style.height="50%";
+    fuChu.style.background="white";
+    fuChu.style.border="1px solid gray";
+}
+
+function hidFuChu()
+{
+	document.getElementById("fuChu").style.visibility="hidden";
+	document.getElementById("back").style.visibility="hidden";
+}
+</script>
