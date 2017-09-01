@@ -924,7 +924,14 @@ option{                         /*啊option样式是不能改的，安全问题�
 <!--这里以下才是task6-->
 <div id="back">
 </div>
-<div id="fuChu" tabindex="1" onblur="hidFuChu()">    <!--元素要想focus或者blur，其tabindex的值必须要有，所以赋个值就行了。同时注意，onblur的前提，是必须得onfocus一下-->
+<div id="fuChu" tabindex="1" onblur="hidFuChu()">    <!--元素要想focus或者blur，其tabindex的值必须要有，所以赋个值就行了。同时注意，onblur的前提，是必须得onfocus一下-->  
+    <div class="fuChuBar" style="width:100%;height:40px;background-color:#D0D0D0;">
+    这是浮出层
+    </div>
+    <div style="position:relative;top:70%;left:80%;width:20%;height:40px;">
+    <button style="width:50px;height:30px;">确定</button>
+    <button style="width:50px;height:30px;">取消</button>
+    </div>
 </div>
 <button id="change" onclick="change()">切换</button>
 <script type="text/javascript">
@@ -961,6 +968,7 @@ function change()
 	{
 		document.getElementById("fuChu").style.visibility="visible";
 	    document.getElementById("back").style.visibility="visible";
+	    document.getElementById("fuChu").focus();
 	}
 	else
 	{

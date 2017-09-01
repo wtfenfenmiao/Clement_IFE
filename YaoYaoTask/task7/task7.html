@@ -1,0 +1,221 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>task7</title>
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style type="text/css">
+*{
+    margin: 0px;
+    padding: 0px;
+}
+div{
+    box-sizing: border-box;
+    width:100%;
+}
+
+table{
+    position: absolute;
+    left:50%;
+    margin-top: 100px;
+    transform: translate(-50%,0);
+    border-collapse: collapse;
+}
+
+td{
+    box-sizing: border-box;
+    position: relative;
+    width:150px;
+    height:50px; 
+    border:2px solid #D0D0D0;  
+    text-align: center;
+    font-size: 25px;
+    
+
+}
+
+.title
+{
+    background-color:black;
+    color:white;
+}
+
+
+
+.able .top{
+    position: absolute;
+    /*border:1px solid white;*/
+    top:2px;
+    right:20px;
+}
+
+.able .bottom{
+    position: absolute;
+    /*border:1px solid white;*/
+    bottom:2px;
+    right:20px;
+}
+
+
+</style>
+</head>
+<body>
+<div class="bor">
+<table border="1" id="table">
+<!--
+    <tr class="title">
+        <td>姓名</td>
+        <td class="able">语文<i class="top fa fa-caret-up" onmouseover="hand(this)" onclick="pos(this)"></i><i class="bottom fa fa-caret-down" onmouseover="hand(this)" onclick="neg(this)"></i></td>
+        <td class="able">数学<i class="top fa fa-caret-up" onmouseover="hand(this)" onclick="pos(this)"></i><i class="bottom fa fa-caret-down" onmouseover="hand(this)" onclick="neg(this)"></i></td>
+        <td class="able">英语<i class="top fa fa-caret-up" onmouseover="hand(this)" onclick="pos(this)"></i><i class="bottom fa fa-caret-down" onmouseover="hand(this)" onclick="neg(this)"></i></td>
+        <td class="able">总分<i class="top fa fa-caret-up" onmouseover="hand(this)" onclick="pos(this)"></i><i class="bottom fa fa-caret-down" onmouseover="hand(this)" onclick="neg(this)"></i></td>
+    </tr>
+    <tr>
+        <td>小明</td>
+        <td>80</td>
+        <td>90</td>
+        <td>70</td>
+        <td>240</td>
+    </tr>
+    <tr>
+        <td>小红</td>
+        <td>90</td>
+        <td>60</td>
+        <td>90</td>
+        <td>240</td>
+    </tr>
+    <tr>
+        <td>小亮</td>
+        <td>60</td>
+        <td>100</td>
+        <td>70</td>
+        <td>230</td>
+    </tr>
+-->
+</table>
+</div>
+<script type="text/javascript">
+var data=new Array();
+data=[["姓名","语文","数学","英语","总分"],
+      ["小明","80","90","70","240"],
+      ["小红","90","60","90","240"],  
+      ["小亮","60","100","70","230"],
+      ["小马","87","92","86","265"]]
+init(data);
+
+function init(data){
+    //alert("there");
+    setTitle(data[0]);
+    for(var i=1;i<data.length;i++)
+    {
+        setCoreData(data[i]);
+    }
+}
+
+function setTitle(title){
+    //alert(title);
+    var tr=document.createElement("tr");
+    tr.setAttribute("class","title");
+    var td=document.createElement("td");
+    td.innerHTML=title[0];
+    tr.appendChild(td);
+    for(var i=1;i<title.length;i++)
+    {
+        var td=document.createElement("td");
+        td.setAttribute("class","able");
+        td.innerHTML=title[i];
+        var iTop=document.createElement("i");
+        iTop.setAttribute("class","top fa fa-caret-up");
+        iTop.onmouseover=function(){hand(this)};
+        iTop.onclick=function(){pos(this)};
+        var iBot=document.createElement("i");
+        iBot.setAttribute("class","bottom fa fa-caret-down");
+        iBot.onmouseover=function(){hand(this)};
+        iBot.onclick=function(){neg(this)};
+        td.appendChild(iTop);
+        td.appendChild(iBot);
+        tr.appendChild(td);
+    }
+    document.getElementById("table").appendChild(tr);
+}
+
+
+function setCoreData(singleData)
+{
+    var tr=document.createElement("tr");
+    for(var i=0;i<singleData.length;i++)
+    {
+        var td=document.createElement("td");
+        td.innerHTML=singleData[i];
+        tr.appendChild(td);
+    }
+    document.getElementById("table").appendChild(tr);
+}
+
+
+
+
+function hand(thisBut)
+{
+    thisBut.style.cursor="hand";
+}
+function pos(thisBut){
+    //alert("pos");
+    var Lie=thisBut.parentNode.cellIndex;
+    //冒泡排序吧
+    var trSet=document.getElementById("table").rows;
+    //alert(trSet);
+    var len=trSet.length;
+    //alert("len:"+len);
+    for(var i=1;i<len-1;i++)
+    {
+        //alert("i:"+i);
+        for(var j=1;j<len-i;j++)
+        {
+            //alert("j:"+j);
+            //alert("qian:"+trSet[j].children[Lie].innerHTML);
+            //alert("hou:"+trSet[j+1].children[Lie].innerHTML);
+            if(parseInt(trSet[j].children[Lie].innerHTML)<parseInt(trSet[j+1].children[Lie].innerHTML))     //字符串比较是不行的，60比100大，因为6比1大......
+            {
+                //alert("there");
+                var temp=trSet[j].innerHTML;
+                trSet[j].innerHTML=trSet[j+1].innerHTML;
+                trSet[j+1].innerHTML=temp;
+                //alert("qian1:"+trSet[j].children[Lie].innerHTML);
+                //alert("hou1:"+trSet[j+1].children[Lie].innerHTML);
+            }
+        }
+    }
+}
+
+function neg(thisBut){
+    //alert("neg");
+    var Lie=thisBut.parentNode.cellIndex;
+    //alert("lie"+Lie);
+    var trSet=document.getElementById("table").rows;
+    //alert(trSet);
+    var len=trSet.length;
+    //alert("len:"+len);
+    for(var i=1;i<len-1;i++)
+    {
+        for(var j=1;j<len-i;j++)
+        {
+            //alert("qian:"+trSet[j].children[Lie].innerHTML);
+            //alert("hou:"+trSet[j+1].children[Lie].innerHTML);
+            if(parseInt(trSet[j].children[Lie].innerHTML)>parseInt(trSet[j+1].children[Lie].innerHTML))
+            {
+                var temp=trSet[j].innerHTML;
+                trSet[j].innerHTML=trSet[j+1].innerHTML;
+                trSet[j+1].innerHTML=temp;
+                //alert("qian1:"+trSet[j].children[Lie].innerHTML);
+                //alert("hou1:"+trSet[j+1].children[Lie].innerHTML);
+            }
+        }
+    }
+}
+
+
+
+</script>
+</body>
+</html>
